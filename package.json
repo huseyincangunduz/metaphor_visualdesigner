@@ -1,0 +1,19 @@
+{
+  "name": "webpage_designer",
+  "version": "0.1.0",
+  "main": "main.js",
+  "dependencies": {
+    "@types/jquery": "^3.3.29",
+    "debug": "^4.1.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.4.1",
+    "material-icons": "^0.2.3",
+    "systemjs": "^2.1.1"
+  },
+  "devDependencies": {},
+  "description": "Web page designer tool",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Hüseyin Can Gündüz"
+}

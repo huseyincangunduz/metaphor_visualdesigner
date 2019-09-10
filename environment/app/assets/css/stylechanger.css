@@ -1,0 +1,95 @@
+
+
+.metaphor-designer {
+    position: absolute;
+    width: 100%;
+    height: 97%;
+  }
+  .internal-designer-area {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    transition: .2s ease-in-out right;
+  }
+  .internal-designer-area iframe{
+    position: absolute;
+    right: 10px;
+  }
+
+
+
+
+  .right-panel {
+    scroll-behavior: smooth;
+    position: absolute;
+    margin: 15px;
+    right:0px;
+    top: 0px;
+    width: 0px;
+    height: 100%;
+    transition: .2s ease-in-out width;
+    overflow: scroll;
+  }
+  
+  .metaphor-designer[right-panel-visible="true"] .internal-designer-area {
+    position: absolute;
+    width: unset;
+    left: 0px;
+    right: 520px;
+ 
+  }
+  .metaphor-designer[right-panel-visible="true"] .right-panel {
+    position: absolute;
+    width: 500px;
+    right: 10px;
+    top: 0px;
+
+
+  }
+
+  .card {
+    padding: 10px 10px 10px 10px;
+    margin: 2px 2px 10px 2px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0px 0px 12px #5c5c5c;
+
+}
+
+.btn {
+    font-size: 9pt;
+    margin: 5px;
+    border: 0.8px solid rgb(255, 255, 255);
+    padding: 5px;
+    border-radius: 5px;
+    transition: .2s ease-in-out;
+    cursor: default;
+    user-select: none;
+}
+
+.btn:hover {
+    background: white;
+    color: black;
+
+}
+
+/* .style-rule {
+
+
+} */
+
+
+.style-rule-code {
+
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10pt;
+}
+
+.style-rule-settings {
+
+    padding: 10px 10px 10px 10px;
+    background-color: #ffffff42;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

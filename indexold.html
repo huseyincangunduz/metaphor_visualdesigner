@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/material-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+    <style>
+        
+        body {
+            background-color: rgb(41, 41, 41);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #area {
+            min-height: 100%
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        #content {
+            position: absolute;
+            top: 40px;
+            left: 0px;
+            right: 0px;
+            bottom: 25px;
+
+        }
+
+        #editorPage {
+
+            position: absolute;
+            height: 100%;
+
+
+            width: 100%;
+            border: none;
+            background: url("assets/img/sample.png")
+        }
+
+        /* SAĞDAKİ EKRAN (TOOLBOX, OUTLINES VS.) KAPALIYKEN*/
+        #content #editorPageContainer,
+        #iframeBackground {
+
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            display: block;
+            bottom: 0px;
+
+        }
+
+        #content #right-popup {
+            position: absolute;
+            padding: 0px 10px;
+            width: 0px;
+            display: none;
+            /* margin: -10px; */
+        }
+
+        /* SAĞDAKİ EKRAN (TOOLBOX, OUTLINES VS.) AÇIKKEN*/
+        #content[RightViewVisible="true"] #editorPageContainer,
+        #content[RightViewVisible="true"] #iframeBackground {
+            right: 300px;
+        }
+
+        #content[RightViewVisible="true"] #right-popup {
+            display: block;
+            right: 0px;
+            width: 300px;
+            height: 100%;
+            background-color: rgb(41, 41, 41);
+        }
+
+        /* SAĞDAKİ EKRAN KURALLARI BİTTİ*/
+
+
+        #ustbilgi .sol {
+            float: left;
+        }
+
+        #ustbilgi .orta {
+            float: middle;
+            text-align: center;
+
+        }
+
+        #ustbilgi .sag {
+            float: right;
+
+        }
+
+        span[selectedtab] {
+            cursor: alias;
+            min-width: 5px;
+            border-radius: 50px;
+            font-size: 10px;
+            height: 12px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin: 2px;
+            transition: 175ms ease-in-out;
+        }
+
+        span[selectedtab]:hover {
+            background-color: rgba(255, 255, 255, 0.548);
+        }
+
+        span[selectedtab='true'] {
+            background: white;
+            color: rgb(41, 41, 41);
+
+
+        }
+
+        .element-setter-tab {
+            display: none;
+            padding: 10pt 0pt;
+        }
+
+        div#iframeBackground {
+            position: absolute;
+            top: 0px;
+            height: 0px;
+            height: 100%;
+            width: 100%;
+
+        }
+
+        div.selectedElementResizer {
+            position: absolute;
+            border: 2px solid rgb(0, 148, 255);
+            height: 7px;
+            width: 7px;
+            background-color: white;
+            border-radius: 200px;
+            margin: 10px;
+            opacity: .5;
+            transition: opacity .2s ease-in-out;
+
+        }
+
+        #snap-element {
+            transition: .2s ease-in-out;
+            opacity: .5;
+        }
+
+        #snap-element[toggle='true'] {
+            background: white;
+            color: rgb(41, 41, 41);
+            opacity: 1;
+        }
+
+        div.selectedElementResizer:hover {
+            opacity: 1;
+        }
+
+        #play-ground {
+            position: absolute;
+
+        }
+
+        div.line {
+            background-color: black
+        }
+
+        div.line[line-type='horizontal'] {
+            height: 5px;
+
+        }
+
+        div.line[line-type='vertical'] {
+            width: 5px;
+
+        }
+
+        svg#editorIframeBackgroundShapes {
+
+            width: 100%;
+            height: 100%;
+        }
+
+        svg#editorIframeBackgroundShapes line {
+            stroke: rgb(255, 0, 0);
+            stroke-width: 5;
+        }
+
+        .ui-text {
+            -webkit-user-select: none;
+
+        }
+
+        .ui-text input {
+            -webkit-user-select: initial !important;
+        }
+
+        #breakpoints-screen {
+            font-weight: normal;
+        }
+
+        #breakpoints-screen #breakpoints-title {
+            font-weight: normal;
+            font-size: 22px;
+        }
+
+        .breakpoint-option {
+            font-weight: normal;
+        }
+
+        .breakpoint-option[selected=true] {
+            font-weight: bold;
+        }
+
+        #add_width_px {
+
+            border-radius: 2px;
+            transition: .1s ease-in-out;
+            border: 3px solid #555;
+        }
+
+        #add_width_px:focus {
+
+
+            outline: 0px solid transparent !important;
+
+
+        }
+
+        .provider-title {
+            font-weight: normal;
+        }
+
+        .property-title {
+            font-size: 10pt;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="ustbilgi" class="ui-text">
+        <div class="sag">
+            <span id="sagtext">
+                <!-- style="font-size: 25px;transform: translate(0,-10%);padding: 3px;" -->
+                <span id="magnetbtn" style="font-size: 25px;padding: 3px;height: 100%;">
+                    <i id="snap-element" toggle="true" style="padding: 2px;transform: translate(0,-10%)"
+                        class="ui-text fa fa-magnet"></i>
+                </span>
+
+                <span id="toolboxbtn" class="material-icons">format_shapes</span>
+
+            </span>
+
+   
+        </div>
+
+        <div class="sol ui-text">
+            <span id="soltext">
+                <span>Toolbox</span>
+            </span>
+
+        </div>
+        <div class="orta">
+            <span id="sagtext">
+                <div> <span>Page title</span></div>
+            </span>
+
+        </div>
+    </div>
+    <div id="content">
+        <div id="editorPageContainer" style="min-width: 1200px;">
+            <div id="iframeBackground">
+                <svg id="editorIframeBackgroundShapes">
+
+                    <!-- <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" /> -->
+                </svg>
+
+            </div>
+            <iframe id="editorPage" src="editortests/anchoring.html" noborder="2"></iframe>
+            <div id="play-ground">
+
+
+            </div>
+
+        </div>
+
+        <div id="right-popup">
+            <div id="element-setter-tab-buttons">
+                <span class="element-setter-tab-btn right-element-setter" selectedtab="true"
+                    target="properties-tab">Özellikler</span>
+                <span class="element-setter-tab-btn" selectedtab="false" target="styles-tab">Stil</span>
+            </div>
+            <div class="element-setter-tab" id="styles-tab">
+                stiller
+            </div>
+            <div class="element-setter-tab" id="properties-tab" style="display:block;">
+                <h3>img#dipper (test)</h3>
+                <div id="faststylingscr">
+
+                </div>
+            </div>
+            <div id="breakpoints-screen" class="ui-text" style="position:absolute; bottom: 0px;">
+                <span id="breakpoints-title">Breakpoints</span>
+
+
+
+                <div id="breakpoint-list">
+                    <div id="breakpoint-other"></div>
+                </div>
+
+                <div id="add_breakpoint_area" style="display: none;">
+                    <input type="number" name="width" id="add_width_px" onkeypress="widthInputTextKeyPress(event)" />
+                    <span id="add_width_px_btn" class="material-icons">+</span>
+                </div>
+                <span id="breakpoint-add" onclick="toggleOn()">Add</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        exports = {};
+    </script>
+    <script src="assets/js/PropertyProviding/ElementPropertyChangeProvider.js"></script>
+    <script src="assets/js/EditorIframeDragEvents.js"></script>
+    <script src="assets/js/editorResizer2.js"></script>
+    <script src="assets/js/EditorElementSnap.js"></script>
+    <script src="assets/js/EditorCSSCommit.js"></script>
+    <script src="assets/js/colorPicker.js"></script>
+    <script src="assets/js/Editor.js">
+
+    </script>
+    <script>
+
+    </script>
+
+</body>
+
+
+
+</html>

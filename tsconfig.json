@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES2018",
+        "outDir": "environment/app/assets/script/js/",
+        "rootDir": "environment/app/assets/script/ts/"
+    }
+    ,    "include": [
+        "./environment/app/assets/script/**/*"
+    ]
+    
+  
+}

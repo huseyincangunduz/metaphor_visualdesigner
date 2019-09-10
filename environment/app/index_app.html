@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="editorPageContainer">
+        <div id="iframeBackground" style="position: absolute">
+            <svg id="editorIframeBackgroundShapes">
+
+                <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+            </svg>
+
+        </div>
+        <iframe id="designeriframe" src="editortests/bigsmoke.html" style="position:absolute; width: 100%; height: 100%"
+            frameborder="0"></iframe>
+        <div id="play-ground" style="position: absolute">
+        </div>
+
+    </div>
+
+</body>
+<!-- <script type="module" data-main="assets/js_build/designer_quickload.js" src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
+<!-- <script type="module" src=""></script> -->
+<script id="import_jquery" type="module">
+    window.$ = window.jQuery = require('jquery');
+</script>
+
+<script type="module">
+    import VisualDesigner from "./VisualDesigner.vue"
+    import { ElementSelectionAndMovementManager } from './assets/script/js_build/VisualDesigner/DragDrop.js';
+    let a = document.getElementById("designeriframe");
+    console.info(a);
+    let x = new ElementSelectionAndMovementManager(a);
+
+</script>
+
+
+</html>

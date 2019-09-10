@@ -1,0 +1,29 @@
+*{
+    font-family: "Poppins"
+}
+
+div.selectedElementResizer {
+    position: absolute;
+    border: 2px solid rgb(0, 148, 255);
+    height: 7px;
+    width: 7px;
+    background-color: white;
+    border-radius: 200px;
+    margin: 10px;
+    opacity: .5;
+    transition: opacity .2s ease-in-out;
+}
+div.selectedElementResizer:hover
+{
+    opacity: 1;
+    
+}
+
+
+.visualdesigner_foreground::-webkit-scrollbar , #visual-designer-container::-webkit-scrollbar, body::-webkit-scrollbar{
+    display: none;
+}
+
+.visualdesigner_foreground {
+    overflow: visible;
+}

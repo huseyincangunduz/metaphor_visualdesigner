@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/temel.css">
+    <link rel="stylesheet" href="assets/css/stylechanger.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="designer-app">
+        <visual-designer ref="visualDesignerComponent"></visual-designer>
+    </div>
+    <!-- <div id="visual-designer-container" src="../editortests/anchoring.html">
+  <div id="iframeBackground" style="position: absolute"/>
+        <iframe id="designeriframe" src="editortests/anchoring.html" frameborder="0"/>
+        <div id="play-ground" style="position: absolute"/>
+
+    </div> -->
+
+</body>
+<!-- <script type="module" data-main="assets/js_build/designer_quickload.js" src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> -->
+<!-- <script type="module" src=""></script> -->
+
+<script id="import_jquery" type="module">
+    try {
+        window.$ = window.jQuery = require('jquery');
+    } catch (ex) {
+        console.info(ex);
+    }
+
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+<script id="import_jquery" type="module">
+    window.$ = window.jQuery = require('jquery');
+</script>
+<script src="assets/script/js/Core/vue.js"></script>
+<script>
+subApp = null;
+</script>
+<script type="module" src="assets/script/js/UI/GUIComponents/GlobalComponents.js"></script>
+
+<script type="module" src="assets/script/js/UI/GUIComponents/VisualDesignerInitializer.js"></script>
+
+</html>
