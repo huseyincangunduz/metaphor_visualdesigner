@@ -94,21 +94,25 @@ export class StyleOtomator {
         //Sağa sola yaslanma olayına karar ver
         //@ts-ignore
         if (elementRelatedStyle.style.position == "absolute" || elementRelatedStyle.style.position == "fixed") {
-            if (TextControlling.isNotEmpty(elementRelatedStyle.style.right) && TextControlling.isEmpty(elementRelatedStyle.style.width)) {
+            // document.scrol
+            if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
                 let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
                 if (TextControlling.isEmpty(editingElement.style.width)) {
-                    editingElement.style.setProperty("width", computedStyle.width);
+                    editingElement.style.setProperty("width", Math.max(Number.parseInt(computedStyle.width.replace("px", "")), editingElement.clientHeight) + "px");
                 }
                 if (!thereWasInlineStlLeftAtStart) {
                     editingElement.style.setProperty("left", computedStyle.left);
                 }
                 elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
                 commitParam.addProperty("right", computedStyle.right);
-                //editingElement.style.removeProperty("width");
-                commitParam.addProperty("width", null);
+                //if (elementRelatedStyle.style.width == null)
                 if (TextControlling.isEmpty(elementRelatedStyle.style.left)) {
                     commitParam.addProperty("left", null);
-                    editingElement.style.removeProperty("left");
+                    commitParam.addProperty("width", editingElement.style.width);
+                }
+                else {
+                    commitParam.addProperty("width", null);
+                    commitParam.addProperty("left", editingElement.style.left);
                 }
                 /*elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
                 commitParam.addProperty("right", computedStyle.right);

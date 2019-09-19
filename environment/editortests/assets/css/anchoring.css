@@ -12,6 +12,8 @@
     background: url('../img/BTL.png') #0288D1;
     min-height: 400px;
     margin: 10px;
+    overflow: scroll;
+    border: 10px  black dotted;
 }
 
 #img_right

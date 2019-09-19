@@ -141,7 +141,7 @@ var StyleChanger = Vue.component("style-changer", {
 });
 var StylesComponent = Vue.component("style-rule-editing-component", {
     template: `<div>
-<h1> {{ elementSelectorText }} </h1>
+                    <h1> {{ elementSelectorText }} </h1>
                             <div v-for="{StyleKey, StyleValue} in styleObject">                          
                                 <style-changer  :initialStylekey="StyleKey" 
                                     :initialStyleval="StyleValue" 
@@ -185,6 +185,9 @@ var StylesComponent = Vue.component("style-rule-editing-component", {
             return obj;
         }, updateStyles() {
             this.styleObject = this.StyleObject(this.styleRule);
+        },
+        updateSelectedElementInfo() {
+            this.updateStyles();
         }
     },
     watch: {
@@ -210,16 +213,27 @@ var InternalVisualDesignerComponent = Vue.component("internal-visual-designer", 
         console.info(this.$refs.ivsRootEl);
         let ivd = InternalVisualDesigner.createByDivAndCreate(this.$refs.ivsRootEl, this, this.$data._src);
         //
-        ivd.eventHandlerSetters.onSelected((element, pivot) => {
+        var select = (element, pivot) => {
             let rule = ivd.styleOtomation.findRule(pivot, null, StyleRuleState.normal);
             this.elementSelection(element, pivot, rule);
-        });
+        };
+        var update = (element, pivot) => {
+            //let rule = ivd.styleOtomation.findRule(pivot,null,StyleRuleState.normal);
+            this.selectedElementUpdate();
+        };
+        ivd.eventHandlerSetters.onSelected(select);
+        ivd.eventHandlerSetters.onMoved(update);
+        ivd.eventHandlerSetters.onResized(update);
         this.internalVisualDesigner = ivd;
     },
     methods: {
         elementSelection(element, pivot, rule) {
             this.$emit("element-selected", element, pivot, rule);
+        },
+        selectedElementUpdate() {
+            this.$emit("element-updated");
         }
+        //elementUpdated
     }
 });
 let VisualDesignerEnvironment = Vue.component("visual-designer", {
@@ -227,7 +241,7 @@ let VisualDesignerEnvironment = Vue.component("visual-designer", {
         <div class="metaphor-designer-root">
           <div class="metaphor-designer" :right-panel-visible="rightPanelVisibility">
             <div ref="uiContentAreaContainer" class="internal-designer-area">
-                <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected" initialSrc="../editortests/anchoring.html"/>
+                <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected" @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html"/>
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
             <style-rule-editing-component ref="elementSelectionEditor"/>
@@ -255,6 +269,9 @@ let VisualDesignerEnvironment = Vue.component("visual-designer", {
             this.$refs.elementSelectionEditor.styleRule = ruleStyle.style;
             this.$refs.elementSelectionEditor.elementSelectorText = pivot.tagName + "#" + pivot.id;
             console.info({ ruleStyle });
+        },
+        onElementUpdated() {
+            this.$refs.elementSelectionEditor.updateSelectedElementInfo();
         }
     }
 });
