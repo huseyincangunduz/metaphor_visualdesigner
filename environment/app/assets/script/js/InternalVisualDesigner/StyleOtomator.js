@@ -98,6 +98,8 @@ export class StyleOtomator {
             if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
                 let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
                 if (TextControlling.isEmpty(editingElement.style.width)) {
+                    let verticalBordersThickness = 0; //parseInt(computedStyle.borderRightWidth.replace("px","")) + parseInt(computedStyle.borderLeftWidth.replace("px",""));
+                    let determinedWidth = editingElement.offsetWidth + verticalBordersThickness;
                     editingElement.style.setProperty("width", Math.max(Number.parseInt(computedStyle.width.replace("px", "")), editingElement.clientHeight) + "px");
                 }
                 if (!thereWasInlineStlLeftAtStart) {

@@ -9,7 +9,12 @@ export class ElementResizeHandler {
                     this.msdownResizerDotOffset = $(ev.target).offset();
                     this.startupLocation = MovementUtils.position(ev.pageX, ev.pageY);
                     this.pivotOffset = $(this.pivot).offset();
-                    this.pivotStartSize = MovementUtils.size(this.pivot.getBoundingClientRect().width, this.pivot.getBoundingClientRect().height);
+                    let pivot_computedStyle = getComputedStyle(this.pivot);
+                    //let verticalBordersThickness = + parseInt(pivot_computedStyle.borderRightWidth.replace("px","")) + parseInt(pivot_computedStyle.borderLeftWidth.replace("px",""));
+                    //let determinedWidth = this.pivot.clientWidth + verticalBordersThickness;
+                    let determinedWidth = parseInt(pivot_computedStyle.width.replace("px", ""));
+                    determinedWidth = determinedWidth == null || isNaN(determinedWidth) ? this.pivot.clientWidth : determinedWidth;
+                    this.pivotStartSize = MovementUtils.size(determinedWidth, this.pivot.clientHeight);
                     this.resizingCallbacks = ResizerUtils.getCallbackForDot(this.resizingMode);
                     this.mouseIsDown = true;
                 }

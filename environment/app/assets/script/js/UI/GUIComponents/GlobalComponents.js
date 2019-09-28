@@ -241,6 +241,7 @@ let VisualDesignerEnvironment = Vue.component("visual-designer", {
         <div class="metaphor-designer-root">
           <div class="metaphor-designer" :right-panel-visible="rightPanelVisibility">
             <div ref="uiContentAreaContainer" class="internal-designer-area">
+                <div @click="toggleOptionsToggleBtnClicked">Toggle Options</div>
                 <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected" @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html"/>
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
@@ -258,6 +259,9 @@ let VisualDesignerEnvironment = Vue.component("visual-designer", {
     },
     watch: {},
     methods: {
+        toggleOptionsToggleBtnClicked() {
+            this.rightPanelVisibility = !this.rightPanelVisibility;
+        },
         updateGUIChilds(containerElement, guiContentElement) {
             while (containerElement.childElementCount > 0) {
                 containerElement.removeChild(containerElement.childElementCount - 1);

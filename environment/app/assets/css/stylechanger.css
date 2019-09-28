@@ -18,7 +18,10 @@
 
 
 
-
+  .right-panel *
+  {
+    min-width: 400px;
+  }
   .right-panel {
     scroll-behavior: smooth;
     position: absolute;
