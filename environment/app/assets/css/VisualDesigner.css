@@ -1,0 +1,91 @@
+body{
+  overflow: hidden;
+}
+
+.metaphor-designer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .internal-designer-area {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    transition: .2s ease-in-out right;
+  }
+  .internal-designer-area iframe{
+    position: absolute;
+    right: 10px;
+  }
+
+
+
+  .right-panel *
+  {
+    min-width: 400px;
+  }
+  .right-panel {
+    scroll-behavior: smooth;
+    position: absolute;
+    
+    right:0px;
+    /* top: 0px; */
+    width: 0px;
+    height: 100%;
+    transition: .2s ease-in-out width;
+    overflow: scroll;
+  }
+  
+  .metaphor-designer[right-panel-visible="true"] .internal-designer-area {
+    position: absolute;
+    width: unset;
+    left: 0px;
+    right: 520px;
+ 
+  }
+  .metaphor-designer[right-panel-visible="true"] .right-panel {
+    position: absolute;
+    width: 500px;
+    right: 10px;
+    top: 0px;
+  }
+
+  
+.style-rule-code {
+
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10pt;
+}
+
+.style-rule-settings {
+
+    padding: 10px 10px 10px 10px;
+    background-color: #ffffff42;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.topbar,.melih-topbar
+{
+  position: relative;
+  background-color: rgb(51, 51, 51);
+
+  height: 50px;
+  color: white;
+}
+
+.topbar .topbar-right
+{
+  position: absolute;
+  right: 0px;
+  padding: 10px;
+}
+.editor-content-area
+{
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  right: 0px;
+  bottom: 10px;
+}
