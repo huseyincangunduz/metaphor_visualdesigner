@@ -120,17 +120,26 @@ export class StyleOtomator {
         if (elementRelatedStyle.style.position == "absolute" || elementRelatedStyle.style.position == "fixed") {
             // document.scrol
 
+            
+
+
+
+
+
             if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
 
                 let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
                 
                 //editingElement.style.setProperty("right", computedStyle.right);
                 
-                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left) && !commitParam.styleValues["width"])
+                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left))
                 {
+                    if (!commitParam.styleValues["width"])
                     editingElement.style.setProperty("right", computedStyle.right);
+                    else
+                    editingElement.style.setProperty("right", "unset");
                 }
-        
+           
                 else if (thereWasInlineStlLeftAtStart) {
                     elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
                 }

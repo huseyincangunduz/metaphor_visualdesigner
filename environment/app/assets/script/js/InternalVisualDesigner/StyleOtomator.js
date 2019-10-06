@@ -98,8 +98,11 @@ export class StyleOtomator {
             if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
                 let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
                 //editingElement.style.setProperty("right", computedStyle.right);
-                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left) && !commitParam.styleValues["width"]) {
-                    editingElement.style.setProperty("right", computedStyle.right);
+                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left)) {
+                    if (!commitParam.styleValues["width"])
+                        editingElement.style.setProperty("right", computedStyle.right);
+                    else
+                        editingElement.style.setProperty("right", "unset");
                 }
                 else if (thereWasInlineStlLeftAtStart) {
                     elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
