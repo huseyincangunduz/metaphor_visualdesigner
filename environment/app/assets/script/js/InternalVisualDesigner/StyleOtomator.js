@@ -97,29 +97,35 @@ export class StyleOtomator {
             // document.scrol
             if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
                 let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
-                if (TextControlling.isEmpty(editingElement.style.width)) {
-                    let verticalBordersThickness = 0; //parseInt(computedStyle.borderRightWidth.replace("px","")) + parseInt(computedStyle.borderLeftWidth.replace("px",""));
-                    let determinedWidth = editingElement.offsetWidth + verticalBordersThickness;
-                    editingElement.style.setProperty("width", Math.max(Number.parseInt(computedStyle.width.replace("px", "")), editingElement.clientHeight) + "px");
+                //editingElement.style.setProperty("right", computedStyle.right);
+                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left) && !commitParam.styleValues["width"]) {
+                    editingElement.style.setProperty("right", computedStyle.right);
+                }
+                else if (thereWasInlineStlLeftAtStart) {
+                    elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
                 }
                 if (!thereWasInlineStlLeftAtStart) {
                     editingElement.style.setProperty("left", computedStyle.left);
                 }
-                elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
-                commitParam.addProperty("right", computedStyle.right);
-                //if (elementRelatedStyle.style.width == null)
+                editingElement.style.setProperty("width", computedStyle.width);
+                // if (TextControlling.isEmpty(editingElement.style.width)) {
+                //     editingElement.style.setProperty("width", computedStyle.width);
+                // }
+                //Commiting
                 if (TextControlling.isEmpty(elementRelatedStyle.style.left)) {
                     commitParam.addProperty("left", null);
-                    commitParam.addProperty("width", editingElement.style.width);
+                    if (!commitParam.styleValues["width"]) {
+                        commitParam.addProperty("width", null);
+                    }
+                    else
+                        commitParam.addProperty("width", computedStyle.width);
                 }
                 else {
+                    commitParam.addProperty("left", computedStyle.left);
                     commitParam.addProperty("width", null);
-                    commitParam.addProperty("left", editingElement.style.left);
                 }
-                /*elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
                 commitParam.addProperty("right", computedStyle.right);
-                commitParam.addProperty("width", null);
-                if (isEmpty(elementRelatedStyle.style.left)) {
+                /*if (isEmpty(elementRelatedStyle.style.left)) {
                     commitParam.addProperty("left", null);
                 }*/
             }

@@ -1,6 +1,26 @@
 import StyleChanger from "./StyleChanger.js";
 import StyleAdder from "./StyleAdder.js";
 
+class StyleObject
+{
+    constructor(stylekey_, styleval_)
+    {
+        this.StyleKey = stylekey_;
+        this.StyleValue = styleval_;
+    }
+    StyleKey : string;
+    StyleValue : string;
+}
+
+class StyleObjectGroup
+{
+    mainStyleKey : string;
+    mainStyleValue : string;
+    styleModifiers : Array<StyleObject>;
+
+}
+
+
 export default Vue.component("style-rule-editing-component", {
     template: `<div>
                     <h1> {{ elementSelectorText }} </h1>
@@ -11,11 +31,12 @@ export default Vue.component("style-rule-editing-component", {
                                     at_style-change-cancellation="styleChangingCancelled">
                                 </style-changer>
                             </div>
-                            <style-adder @style-added="styleIsChanged" />
+                            <style-adder @style-added="styleIsAdded" />
                 </div>`,
     components: { StyleChanger, StyleAdder },
     data: function () {
         return {
+            editingPivotElement : null,
             //@ts-ignore
             styleRule: null,
             //@ts-ignore
@@ -37,13 +58,30 @@ export default Vue.component("style-rule-editing-component", {
             this.updateStyles();
             data.component.styleVal = data.styleVal
         },
+        styleIsAdded(data) {
+           // var this.editingPivotElement : 
+            let styleVal = data.styleVal;
+            if (this.editingPivotElement != null && styleVal != "initial")
+            {
+                var iframeWin = this.editingPivotElement.ownerDocument.defaultView;
+                var computedStyle = iframeWin.getComputedStyle(this.editingPivotElement);
+                styleVal =  computedStyle[data.styleKey] ?  computedStyle[data.styleKey] : styleVal;
+            }
+            console.info({ type: "styleIsAdded", data });
+            this.styleRule.setProperty(data.styleKey, styleVal);
+            //Vue.set(this.styleRule, data.styleKey, data.styleVal);
+            this.updateStyles();
+            data.component.styleVal = data.styleVal
+        },
         StyleObject(stl) {
             console.info("styleObject çalışıyor");
             //let stl = this.styleRule;
             let obj = [];
-            for (let index = 0; index < stl.length; index++) {
-                const key = stl[index];
-                obj.push({ StyleKey: key, StyleValue: stl[key] });
+            for (let key_index = 0; key_index < stl.length; key_index++) {
+                const key = stl[key_index];
+                let value = stl[key];
+
+                obj.push(new StyleObject(key,value));
 
             }
             return obj;

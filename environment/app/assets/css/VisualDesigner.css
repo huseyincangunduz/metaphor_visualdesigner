@@ -22,7 +22,7 @@ body{
 
   .right-panel *
   {
-    min-width: 400px;
+    min-width: 250px;
   }
   .right-panel {
     scroll-behavior: smooth;
@@ -37,15 +37,16 @@ body{
   }
   
   .metaphor-designer[right-panel-visible="true"] .internal-designer-area {
+    padding: 20px;
     position: absolute;
     width: unset;
     left: 0px;
-    right: 520px;
+    right: 350px;
  
   }
   .metaphor-designer[right-panel-visible="true"] .right-panel {
     position: absolute;
-    width: 500px;
+    width: 350px;
     right: 10px;
     top: 0px;
   }

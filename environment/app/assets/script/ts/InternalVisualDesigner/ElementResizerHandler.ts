@@ -36,10 +36,10 @@ export class ElementResizeHandler {
                 let pivot_computedStyle = getComputedStyle(this.pivot);
                 //let verticalBordersThickness = + parseInt(pivot_computedStyle.borderRightWidth.replace("px","")) + parseInt(pivot_computedStyle.borderLeftWidth.replace("px",""));
                 //let determinedWidth = this.pivot.clientWidth + verticalBordersThickness;
-                let determinedWidth = parseInt(pivot_computedStyle.width.replace("px",""));
-                determinedWidth = determinedWidth == null || isNaN(determinedWidth) ? this.pivot.clientWidth : determinedWidth;
+                //let determinedWidth = parseInt(pivot_computedStyle.width.replace("px",""));
+                //determinedWidth = determinedWidth == null || isNaN(determinedWidth) ? this.pivot.offsetWidth : determinedWidth;
 
-                this.pivotStartSize = MovementUtils.size(determinedWidth, this.pivot.clientHeight)
+                this.pivotStartSize = MovementUtils.size(this.pivot.offsetWidth, this.pivot.clientHeight)
 
                 this.resizingCallbacks = ResizerUtils.getCallbackForDot(this.resizingMode)
                 this.mouseIsDown = true;

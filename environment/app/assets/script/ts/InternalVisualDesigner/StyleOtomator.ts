@@ -1,4 +1,4 @@
-import {TextControlling} from "./Utils.js";
+import { TextControlling } from "./Utils.js";
 
 class CommitParameter {
     public styleKeys: string[];
@@ -119,45 +119,56 @@ export class StyleOtomator {
         //@ts-ignore
         if (elementRelatedStyle.style.position == "absolute" || elementRelatedStyle.style.position == "fixed") {
             // document.scrol
+
             if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
+
                 let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
-
-
-                if (TextControlling.isEmpty(editingElement.style.width))
+                
+                //editingElement.style.setProperty("right", computedStyle.right);
+                
+                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left) && !commitParam.styleValues["width"])
                 {
-                    let verticalBordersThickness = 0;//parseInt(computedStyle.borderRightWidth.replace("px","")) + parseInt(computedStyle.borderLeftWidth.replace("px",""));
-                    let determinedWidth = editingElement.offsetWidth + verticalBordersThickness;
-                    editingElement.style.setProperty("width", Math.max(Number.parseInt(computedStyle.width.replace("px","")),editingElement.clientHeight) + "px");
+                    editingElement.style.setProperty("right", computedStyle.right);
                 }
-                if (!thereWasInlineStlLeftAtStart)
-                {
-                    editingElement.style.setProperty("left",computedStyle.left);
+        
+                else if (thereWasInlineStlLeftAtStart) {
+                    elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
                 }
 
-                elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
-                commitParam.addProperty("right", computedStyle.right);
-                
-                //if (elementRelatedStyle.style.width == null)
-                
-            
+                if (!thereWasInlineStlLeftAtStart) {
+                    editingElement.style.setProperty("left", computedStyle.left);
+                }
 
-                
-                
+             
+                editingElement.style.setProperty("width", computedStyle.width);
+                // if (TextControlling.isEmpty(editingElement.style.width)) {
+                //     editingElement.style.setProperty("width", computedStyle.width);
+                // }
+             
+
+//Commiting
                 if (TextControlling.isEmpty(elementRelatedStyle.style.left)) {
                     commitParam.addProperty("left", null);
-                    commitParam.addProperty("width",editingElement.style.width);
+                    if (!commitParam.styleValues["width"]) {
+                        commitParam.addProperty("width", null);
+                    }
+                    else 
+                        commitParam.addProperty("width", computedStyle.width);
+    
+    
                 }
                 else {
-                    commitParam.addProperty("width",null);
-                    commitParam.addProperty("left",editingElement.style.left);
+                    commitParam.addProperty("left",  computedStyle.left);
+                    commitParam.addProperty("width", null);
                 }
+                   
 
-                
-  
-                /*elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
+ 
+
+               
                 commitParam.addProperty("right", computedStyle.right);
-                commitParam.addProperty("width", null);
-                if (isEmpty(elementRelatedStyle.style.left)) {
+              
+                /*if (isEmpty(elementRelatedStyle.style.left)) {
                     commitParam.addProperty("left", null);
                 }*/
             }
@@ -166,26 +177,25 @@ export class StyleOtomator {
 
 
     findRule(editingElement: HTMLElement, enabledMediaRule: CSSMediaRule, ruleState: StyleRuleState) {
-        let rulelist: CSSRuleList; 
+        let rulelist: CSSRuleList;
 
-        if (TextControlling.isEmpty(editingElement.id))
-        {
+        if (TextControlling.isEmpty(editingElement.id)) {
             let newID = "";
             let doc = editingElement.ownerDocument;
             let ellist = doc.querySelectorAll(editingElement.tagName).length,
-            trig = ellist;
-            do{
+                trig = ellist;
+            do {
                 newID = editingElement.tagName + "_" + trig;
                 trig++;
-            } while(doc.querySelectorAll(`#${newID}`).length > 0);
+            } while (doc.querySelectorAll(`#${newID}`).length > 0);
             editingElement.id = newID;
 
         }
 
-        
- 
-        let id_selector: string = `#${editingElement.id}`, 
-        selector: Array<string>;
+
+
+        let id_selector: string = `#${editingElement.id}`,
+            selector: Array<string>;
         rulelist = (enabledMediaRule != null) ? enabledMediaRule.cssRules : this.editingStyleSheet.cssRules;
         selector = this.getRequiredSelectorsArray(id_selector, ruleState);
         let determinedRule: CSSStyleRule | CSSRule;

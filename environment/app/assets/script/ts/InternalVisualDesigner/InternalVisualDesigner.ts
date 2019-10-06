@@ -29,9 +29,9 @@ export class InternalVisualDesigner {
         console.info(pivot);
 
         this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
-        if (pivot.id == "mabel") {
-            this.styleOtomation.commitStyleElement(pivot, StyleRuleState.hover);
-        }
+        // if (pivot.id == "mabel") {
+        //     this.styleOtomation.commitStyleElement(pivot, StyleRuleState.hover);
+        // }
         this.eventHandlers.onMoved(element,pivot);
     }
     onSelected = (element, pivot, styleRule) => {

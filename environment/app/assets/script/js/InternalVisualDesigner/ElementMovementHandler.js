@@ -34,7 +34,6 @@ export class ElementMovementHandler {
             this.pivotOffset = this.pivotjq.offset(); //{left: this.pivot.offsetLeft, top: this.pivot.offsetTop} ;
             this.leftMouseBtnIsDown = true;
         }
-        ;
     }
     move(ev) {
         if (this.leftMouseBtnIsDown && this.pivot != null) {
@@ -49,7 +48,9 @@ export class ElementMovementHandler {
             return false;
     }
     release() {
-        this.leftMouseBtnIsDown = false;
-        this.eventHandlers.onMoved(this.selectedElements, this.pivot);
+        if (this.leftMouseBtnIsDown) {
+            this.leftMouseBtnIsDown = false;
+            this.eventHandlers.onMoved(this.selectedElements, this.pivot);
+        }
     }
 }

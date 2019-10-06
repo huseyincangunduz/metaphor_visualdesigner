@@ -41,6 +41,7 @@ export default Vue.component("visual-designer", {
         },
         onElementSelected(element, pivot, ruleStyle) {
             console.info(element, pivot, ruleStyle);
+            this.$refs.elementSelectionEditor.editingPivotElement = pivot;
             this.$refs.elementSelectionEditor.styleRule = ruleStyle.style;
             this.$refs.elementSelectionEditor.elementSelectorText = pivot.tagName + "#" + pivot.id;
             console.info({ ruleStyle });
