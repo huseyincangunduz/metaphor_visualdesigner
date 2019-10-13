@@ -1,5 +1,6 @@
 import StyleChanger from "./StyleChanger.js";
 import StyleAdder from "./StyleAdder.js";
+import { TextControlling } from "../../../InternalVisualDesigner/Utils.js";
 class StyleObject {
     constructor(stylekey_, styleval_) {
         this.StyleKey = stylekey_;
@@ -8,6 +9,59 @@ class StyleObject {
 }
 class StyleObjectGroup {
 }
+class StyleOverrideManager {
+    static getMainModifier(styleKey) {
+        this.initialize();
+        let k1 = this.modifiersHash[styleKey];
+        if (k1) {
+            let k2 = this.modifiersHash[k1];
+            return k2 ? k1 : false;
+        }
+    }
+    static initialize() {
+        if (!this.initialized) {
+            let hash = this.modifiersHash;
+            let keys = Object.keys(this.mainModifiers);
+            //TODO: For yerine hazır fonksiyonları incele ve varsa onlara uyarla
+            for (let index = 0; index < keys.length; index++) {
+                const mainModifNm = keys[index];
+                const subModifiersArray = this.mainModifiers[mainModifNm];
+                hash[mainModifNm] = subModifiersArray;
+                for (let j = 0; j < subModifiersArray.length; j++) {
+                    const subModifier = subModifiersArray[j];
+                    hash[subModifier] = mainModifNm;
+                }
+            }
+            this.initialized = true;
+        }
+    }
+}
+StyleOverrideManager.modifiersHash = {};
+StyleOverrideManager.mainModifiers = {
+    background: [
+        "background-image",
+        "background-position-x",
+        "background-position-y",
+        "background-size",
+        "background-repeat-x",
+        "background-repeat-y",
+        "background-attachment",
+        "background-origin",
+        "background-clip",
+        "background-color",
+    ],
+    // font:
+    // [
+    //     "font-size"
+    // ],
+    margin: [
+        "margin-top",
+        "margin-bottom",
+        "margin-left",
+        "margin-right"
+    ],
+};
+StyleOverrideManager.initialized = false;
 export default Vue.component("style-rule-editing-component", {
     template: `<div>
                     <h1> {{ elementSelectorText }} </h1>
@@ -62,10 +116,21 @@ export default Vue.component("style-rule-editing-component", {
             console.info("styleObject çalışıyor");
             //let stl = this.styleRule;
             let obj = [];
+            let addedKeys = [];
             for (let key_index = 0; key_index < stl.length; key_index++) {
                 const key = stl[key_index];
-                let value = stl[key];
-                obj.push(new StyleObject(key, value));
+                let mainMod = StyleOverrideManager.getMainModifier(key);
+                if (mainMod == false || TextControlling.isEmpty(stl[mainMod])) {
+                    let value = stl[key];
+                    obj.push(new StyleObject(key, value));
+                    addedKeys.push(key);
+                }
+                else {
+                    if (addedKeys.indexOf(mainMod) == -1) {
+                        obj.push(new StyleObject(mainMod, stl[mainMod]));
+                        addedKeys.push(mainMod);
+                    }
+                }
             }
             return obj;
         }, updateStyles() {

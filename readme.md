@@ -19,6 +19,11 @@ Notations:
 ..(1gün): 1 day(s)
 
 Aims:
-    Detailed soon
-
+    ❌Visual Designer Environment
+    --➖Visual Designer Controller
+    ----✔Movement
+    ----✔Resize
+    ----➖Text Editing
+    ------✔Enter Text editing
+    ----✔Left-Right adaption for absolute positioning element
 
