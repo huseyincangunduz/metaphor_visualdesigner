@@ -31,3 +31,8 @@ div.selectedElementResizer:hover
 .visualdesigner_foreground {
     overflow: visible;
 }
+
+.ghost-text-box .text-editing-area
+{
+    border: 1px black solid;display:inline-block; min-width: 20px; min-height: 20px;
+}

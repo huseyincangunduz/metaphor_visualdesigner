@@ -7,8 +7,10 @@ export default Vue.component("style-changer",
                                     <span class="style-rule-code">
                                         <span>
                                             <span class="style-modifier">{{styleKey}}</span>: 
-                                            <span v-show="editingMode" ref="valueInputElement" contentEditable="true" class="style-value style-value-edit"  @blur="lostFocusWithoutStyleApply" @keydown="valueKeyDown">{{styleValue}}</span> 
+                                            <ghost-text-box :initialText="styleValue" @textchanged="valueChanged"/>
+                                            <!--<span v-show="editingMode" ref="valueInputElement" contentEditable="true" class="style-value style-value-edit"  @blur="lostFocusWithoutStyleApply" @keydown="valueKeyDown">{{styleValue}}</span> 
                                             <span v-show="!editingMode" class="style-value"  @dblclick="valueDoubleClick">{{styleValue}}</span>
+                                            -->
                                             <span>;</span>       
                                         </span>                                  
                                     </span>
@@ -49,6 +51,15 @@ export default Vue.component("style-changer",
             }
         },
         methods: {
+            valueChanged:function(newText)
+            {
+                this.$emit("style-changed", {
+                    styleKey: this.styleKey,
+                    styleOldVal: this.styleValue,
+                    styleVal: newText,
+                    component: this
+                });
+            },
             removeStyle(e) {
                 console.info("remove style");
                 this.$emit("style-removed", {

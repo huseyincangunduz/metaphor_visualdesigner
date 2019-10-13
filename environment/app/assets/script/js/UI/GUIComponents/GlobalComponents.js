@@ -1,4 +1,5 @@
 //Components
+import GhostTextBox from "./Vue/Primitives/GhostTextEditor.js";
 import StylesComponent from "./Vue/StylesComponent.js";
 import StyleAdder from "./Vue/StyleAdder.js";
 import StyleChanger from "./Vue/StyleChanger.js";
@@ -8,7 +9,7 @@ import VisualDesignerEnvironment from "./Vue/VisualDesignerEnvironment.js";
 window.Morphosium = {
     Metaphor: {
         Components: {
-            StyleAdder, StyleChanger, StylesComponent, InternalVisualDesignerComponent, VisualDesignerEnvironment
+            GhostTextBox, StyleAdder, StyleChanger, StylesComponent, InternalVisualDesignerComponent, VisualDesignerEnvironment
         }
     }
 };

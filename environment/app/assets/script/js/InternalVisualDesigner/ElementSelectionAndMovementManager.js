@@ -7,7 +7,7 @@ class ElementSelectionAndMovementManager {
         this.mouseDownEvent = (ev) => {
             if (this.movementEnabled) {
                 //@ts-ignore iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
-                if (ev.target instanceof this.designerIframeWindow.HTMLElement) {
+                if (ev.target instanceof this.designerIframeWindow.HTMLElement && ev.target != this.designerIframeDocument.documentElement) {
                     this.clearSelectedElements();
                     //@ts-ignore iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
                     let targetElement_ = ev.target;

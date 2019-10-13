@@ -158,11 +158,15 @@ export class StyleOtomator {
 //Commiting
                 if (TextControlling.isEmpty(elementRelatedStyle.style.left)) {
                     commitParam.addProperty("left", null);
-                    if (!commitParam.styleValues["width"]) {
-                        commitParam.addProperty("width", null);
-                    }
-                    else 
+                    if (elementRelatedStyle.style.width) {
                         commitParam.addProperty("width", computedStyle.width);
+                        
+                    }
+                    else if(!commitParam.styleValues["width"])
+                    {
+                        commitParam.addProperty("width", null);
+                    } 
+                    
     
     
                 }
