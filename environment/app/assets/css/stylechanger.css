@@ -9,12 +9,22 @@
 
 }
 
+.card :not(.btn)
+{
+    font-family: monospace;
+}
+
+.card[issub="true"]
+{
+    background-color: darkgoldenrod !important;
+    margin-left: 0px;
+}
 .btn {
     font-size: 9pt;
-    margin: 5px;
+    margin: 3px;
     border: 0.8px solid rgb(255, 255, 255);
-    padding: 5px;
-    border-radius: 5px;
+    padding: 3px;
+    border-radius: 3px;
     transition: .2s ease-in-out;
     cursor: default;
     user-select: none;

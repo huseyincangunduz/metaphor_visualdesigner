@@ -1,28 +1,11 @@
 import StyleChanger from "./StyleChanger.js";
 import StyleAdder from "./StyleAdder.js";
 import { TextControlling } from "../../../InternalVisualDesigner/Utils.js";
-
-class StyleObject {
-    constructor(stylekey_, styleval_) {
-        this.StyleKey = stylekey_;
-        this.StyleValue = styleval_;
-    }
-    StyleKey: string;
-    StyleValue: string;
-}
-
-class StyleObjectGroup {
-    mainStyleKey: string;
-    mainStyleValue: string;
-    styleModifiers: Array<StyleObject>;
-
-}
-
 class StyleOverrideManager {
     static modifiersHash = {};
 
     static mainModifiers = {
-        background: [
+        "background": [
             "background-image",
             "background-position-x",
             "background-position-y",
@@ -33,21 +16,51 @@ class StyleOverrideManager {
             "background-origin",
             "background-clip",
             "background-color",
+        ], "padding": [
+            "padding-left",
+            "padding-top",
+            "padding-right",
+            "padding-bottom"
         ],
-         // font:
+        "border-radius": [
+            "border-top-left-radius",
+            "border-top-right-radius",
+            "border-bottom-right-radius",
+            "border-bottom-left-radius"
+        ], "border": [
+            "border-top-color",
+            "border-top-style",
+            "border-top-width",
+            "border-right-color",
+            "border-right-style",
+            "border-right-width",
+            "border-bottom-color",
+            "border-bottom-style",
+            "border-bottom-width",
+            "border-left-color",
+            "border-left-style",
+            "border-left-width",
+            "border-image-outset",
+            "border-image-repeat",
+            "border-image-slice",
+            "border-image-source",
+            "border-image-width",
+        ],
+        // font:
         // [
         //     "font-size"
         // ],
-        margin:[
+        "margin": [
             "margin-top",
             "margin-bottom",
             "margin-left",
             "margin-right"
         ],
-        // overflow: [
-        //     "overflow-x",
-        //     "overflow-y"
-        // ]
+        "overflow": [
+            "overflow-x",
+            "overflow-y"
+        ],
+
     }
     static initialized: boolean = false;
 
@@ -80,17 +93,94 @@ class StyleOverrideManager {
 
 
 }
+class StyleObject {
+    constructor(stylekey_, styleval_) {
+        this.StyleKey = stylekey_;
+        this.StyleValue = styleval_;
+        this.subModifiers = [];
+
+    }
+    StyleKey: string;
+    StyleValue: string;
+    subModifiers: Array<StyleObject>;
+
+}
+
+class StyleObjectCollector {
+
+
+    public styleObjects: Array<StyleObject> = [];
+    public keys: Array<string> = [];
+    points = {};
+    public transferFromStyleDecleration(relatedStyleDecleration: CSSStyleDeclaration) {
+        for (let i = 0; i < relatedStyleDecleration.length; i++) {
+            const styleKey = relatedStyleDecleration[i],
+                styleVal = relatedStyleDecleration[styleKey];
+
+            this.insertKey(relatedStyleDecleration, styleKey, styleVal);
+
+        }
+    }
+    addToArrays(stl_object: StyleObject) {
+        let key = stl_object.StyleKey;
+
+        this.styleObjects.push(stl_object);
+        this.keys.push(key);
+
+        this.points[key] = stl_object;
+    }
+    addToArrayAsSubModifier(mainMod: any, key: string, value: string) {
+        this.points[mainMod].subModifiers.push(new StyleObject(key, value));
+    }
+    public insertKey(relatedStyleDecleration: CSSStyleDeclaration, key: string, value: string) {
+        let mainMod = StyleOverrideManager.getMainModifier(key);
+        if (mainMod == false || TextControlling.isEmpty(relatedStyleDecleration[mainMod])) {
+
+            let value = relatedStyleDecleration[key];
+            let stl_object = new StyleObject(key, value);
+            this.addToArrays(stl_object);
+
+        }
+        else {
+            if (this.keys.indexOf(mainMod) == -1) {
+                let stl_object = new StyleObject(mainMod, relatedStyleDecleration[mainMod]);
+                this.addToArrays(stl_object);
+            }
+            this.addToArrayAsSubModifier(mainMod, key, value);
+
+        }
+    }
+
+
+}
+
+
 
 export default Vue.component("style-rule-editing-component", {
     template: `<div>
                     <h1> {{ elementSelectorText }} </h1>
-                            <div v-for="{StyleKey, StyleValue} in styleObject">                          
+                            <div v-for="{StyleKey, StyleValue, subModifiers} in styleObject">                          
                                 <style-changer  :initialStylekey="StyleKey" 
                                     :initialStyleval="StyleValue" 
-                                    :key="StyleKey" @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
-                                    at_style-change-cancellation="styleChangingCancelled">
+                                    :key="StyleKey"
+                                     @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
+                                    at_style-change-cancellation="styleChangingCancelled"
+                                    @click="() => showModifier(StyleKey)">
                                 </style-changer>
+
+                                <div v-if="subModifiers != null && subModifiers.length > 0" 
+                                v-show="subModifierIsShowing(StyleKey)">
+                                    <div v-for="{StyleKey, StyleValue} in subModifiers">                          
+                                        <style-changer :is-sub-modifier="true" :initialStylekey="StyleKey" 
+                                            :initialStyleval="StyleValue" 
+                                            :key="StyleKey" @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
+                                            at_style-change-cancellation="styleChangingCancelled">
+                                        </style-changer>
+                                    </div>
+                                </div>
+
                             </div>
+
                             <style-adder @style-added="styleIsAdded" />
                 </div>`,
     components: { StyleChanger, StyleAdder },
@@ -101,11 +191,38 @@ export default Vue.component("style-rule-editing-component", {
             styleRule: null,
             //@ts-ignore
             styleObject: null,
-            elementSelectorText: "*"
+            elementSelectorText: "*",
+            showingSubModifiers: []
 
         }
     },
+    watch: {
+        styleRule() {
+            console.info("styleRule değişti")
+            if (!this.subModifier) this.styleObject = this.StyleObject(this.styleRule);
+        }
+    },
     methods: {
+        
+        showModifier(a) {
+            var dizi : Array<string> = this.showingSubModifiers;
+            var dizi_index = dizi.indexOf(a);
+            if (dizi_index == -1)
+            {
+                dizi.push(a);
+            }
+            else
+            {
+                dizi.splice(dizi_index,1);
+            }
+
+        },
+        subModifierIsShowing(k)
+        {
+            var dizi : Array<string> = this.showingSubModifiers;
+            var dizi_index = dizi.indexOf(k);
+            return (dizi_index > -1)
+        },
         styleIsRemoved(data) {
             Vue.set(this.styleRule, data.styleKey, null);
             this.updateStyles();
@@ -133,32 +250,10 @@ export default Vue.component("style-rule-editing-component", {
             data.component.styleVal = data.styleVal
         },
         StyleObject(stl) {
-            console.info("styleObject çalışıyor");
-            //let stl = this.styleRule;
 
-            let obj = [];
-            let addedKeys = [];
-            for (let key_index = 0; key_index < stl.length; key_index++) {
-                const key = stl[key_index];
-                let mainMod = StyleOverrideManager.getMainModifier(key);
-
-                if (mainMod == false || TextControlling.isEmpty(stl[mainMod])) {
-
-                    let value = stl[key];
-
-                    obj.push(new StyleObject(key, value));
-                    addedKeys.push(key);
-                }
-                else {
-                    if (addedKeys.indexOf(mainMod) == -1) {
-                        obj.push(new StyleObject(mainMod, stl[mainMod]));
-                        addedKeys.push(mainMod);
-                    }
-                }
-
-
-            }
-            return obj;
+            let styleCollection = new StyleObjectCollector();
+            styleCollection.transferFromStyleDecleration(stl);
+            return styleCollection.styleObjects;
         }, updateStyles() {
             this.styleObject = this.StyleObject(this.styleRule);
 
@@ -167,13 +262,8 @@ export default Vue.component("style-rule-editing-component", {
             this.updateStyles();
         }
 
-    },
-    watch: {
-        styleRule() {
-            console.info("styleRule değişti")
-            this.styleObject = this.StyleObject(this.styleRule);
-        }
-    },
+    }
+
 
 
 });

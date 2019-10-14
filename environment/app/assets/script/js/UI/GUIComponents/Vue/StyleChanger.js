@@ -1,15 +1,12 @@
 export default Vue.component("style-changer", {
     template: `<div>
-                        <div class="card style-rule" :style="{backgroundColor: color}">
+                        <div class="card style-rule" ref="card" @click="cardOnClick" :isSub="isSubModifier" :style="{backgroundColor: color}">
                                 <div>
                                     <span class="btn" @click ="removeStyle">Remove</span>
                                     <span class="style-rule-code">
                                         <span>
                                             <span class="style-modifier">{{styleKey}}</span>: 
-                                            <ghost-text-box :initialText="styleValue" @textchanged="valueChanged"/>
-                                            <!--<span v-show="editingMode" ref="valueInputElement" contentEditable="true" class="style-value style-value-edit"  @blur="lostFocusWithoutStyleApply" @keydown="valueKeyDown">{{styleValue}}</span> 
-                                            <span v-show="!editingMode" class="style-value"  @dblclick="valueDoubleClick">{{styleValue}}</span>
-                                            -->
+                                            <ghost-text-box class="style-value" :initialText="styleValue" @textchanged="valueChanged"/>
                                             <span>;</span>       
                                         </span>                                  
                                     </span>
@@ -28,6 +25,10 @@ export default Vue.component("style-changer", {
         initialStyleval: {
             type: String,
             required: true
+        },
+        isSubModifier: {
+            type: Boolean,
+            default: false
         }
     },
     watch: /*değişiklikleri inceleme*/ {
@@ -40,13 +41,13 @@ export default Vue.component("style-changer", {
         editingMode() {
             this.$refs.valueInputElement.innerText = this.styleValue;
             //console.info("Düzenleme modu değişti");
-        }
+        },
     },
     data: function () {
         return {
             editingMode: false,
             styleKey: this.initialStylekey,
-            styleValue: this.initialStyleval
+            styleValue: this.initialStyleval,
         };
     },
     methods: {
@@ -72,6 +73,9 @@ export default Vue.component("style-changer", {
         },
         lostFocusWithoutStyleApply(e) {
             this.editingMode = false;
+        },
+        cardOnClick() {
+            this.$emit("click");
         },
         valueKeyDown(e /*: KeyboardEvent*/) {
             if (e.keyCode == 13) /*enter*/ {
