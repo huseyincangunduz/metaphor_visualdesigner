@@ -1,5 +1,5 @@
 
-import { MovementUtils, Range } from "./Utils.js";
+import { MovementUtils, Range } from "../Utils.js";
 
 
 export class ElementResizeHandler {
@@ -10,6 +10,7 @@ export class ElementResizeHandler {
     /**TR: Yeniden boyutlandırma için kullanılan noktaların sadece seçileni vurgulamak için olduğunu, herhangi bir şekilde basılı tutarak ve sürükleyerek boyutlandırma işlemi yapılmayacağını ifade eder. EN: The resizer dots is only to highlight the selected one,means that there will be no sizing by holding down and dragging in any way.
      */
     private onlyEmphasizeDots: boolean;
+    
     private resizerDotsArea: HTMLDivElement;
     private mouseIsDown: Boolean;
 

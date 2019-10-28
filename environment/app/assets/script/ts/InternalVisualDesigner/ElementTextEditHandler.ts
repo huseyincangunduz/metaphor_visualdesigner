@@ -1,6 +1,6 @@
 const METAPHOR_SUBTEXT = "metaphor-subtext";
 import * as Constants from "./VisualDesignerConst.js"
-import { AncestorParentUtils } from "./Utils.js"
+import { AncestorParentUtils } from "../Utils.js"
 
 export class ElementTextEditHandler {
     iframeWindow: Window;

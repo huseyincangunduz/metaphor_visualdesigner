@@ -1,4 +1,4 @@
-import { TextControlling } from "./Utils.js";
+import { TextControlling } from "../Utils.js";
 
 class CommitParameter {
     public styleKeys: string[];
@@ -192,13 +192,16 @@ export class StyleOtomator {
     findRule(editingElement: HTMLElement, enabledMediaRule: CSSMediaRule, ruleState: StyleRuleState) {
         let rulelist: CSSRuleList;
 
+        //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te
+        //ne kadar kendi taginde element varsa sonundaki sayı okadar olur
+        
         if (TextControlling.isEmpty(editingElement.id)) {
             let newID = "";
             let doc = editingElement.ownerDocument;
             let ellist = doc.querySelectorAll(editingElement.tagName).length,
                 trig = ellist;
             do {
-                newID = editingElement.tagName + "_" + trig;
+                newID = editingElement.tagName + "-" + trig;
                 trig++;
             } while (doc.querySelectorAll(`#${newID}`).length > 0);
             editingElement.id = newID;

@@ -1,5 +1,5 @@
 
-import { MovementUtils, Range } from "./Utils.js";
+import { MovementUtils, Range } from "../Utils.js";
 export class ElementMovementHandler {
     eventHandlers = {
         onMoved: (elements: Array<HTMLElement | EventTarget>, pivot: HTMLElement) => {

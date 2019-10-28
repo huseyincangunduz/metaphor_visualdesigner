@@ -9,7 +9,6 @@ const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 export class InternalVisualDesigner {
     initialized: boolean = false;
     public internalDesignerComponent : VueComponent;
-
     public containerHTMLElement: HTMLDivElement;
     mainEditingStyleSheet: CSSStyleSheet;
     editingIframeDocument: HTMLDocument;

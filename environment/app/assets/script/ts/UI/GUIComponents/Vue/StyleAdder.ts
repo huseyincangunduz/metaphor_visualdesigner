@@ -1,3 +1,5 @@
+import { StyleSetterComponents } from "../UIEditIntegrationUtils/StyleSetterDefinitions.js";
+
 export default Vue.component("style-adder",
     {
         template: `
@@ -9,6 +11,8 @@ export default Vue.component("style-adder",
                         <span ref="styleKeyTextSpan" class="style-rule-code style-value style-value-edit" contentEditable="true" @blur="lostFocusWithoutStyleApply" @keydown="valueKeyDown"></span>
                     </span>    
                 </div>
+
+
                 <div v-show="!editingMode">
                     <span>                       
                         <span style="min-width: 200px; font-style: oblique" v-show="!editingMode" @click="enterEditing" @keydown="enterEditing">Type style key for add</span>
@@ -27,6 +31,7 @@ export default Vue.component("style-adder",
             },
             methods:
             {
+   
                 addStyle()
                 {
                 

@@ -1,5 +1,5 @@
 import { ElementResizeHandler } from "./ElementResizerHandler.js";
-import { MovementUtils, Range } from "./Utils.js";
+import { MovementUtils, Range } from "../Utils.js";
 import { ElementMovementHandler } from "./ElementMovementHandler.js";
 import { ElementTextEditHandler } from "./ElementTextEditHandler"
 

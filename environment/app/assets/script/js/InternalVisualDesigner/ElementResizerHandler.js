@@ -1,4 +1,4 @@
-import { MovementUtils } from "./Utils.js";
+import { MovementUtils } from "../Utils.js";
 export class ElementResizeHandler {
     constructor(iframeElement, resizerDotsAreaElement) {
         this.resizerdots_msdown /*: (this: Document, ev: MouseEvent) => any*/ = (ev) => {

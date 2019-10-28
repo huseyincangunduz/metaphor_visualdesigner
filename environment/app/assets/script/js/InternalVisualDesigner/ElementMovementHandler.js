@@ -1,4 +1,4 @@
-import { MovementUtils } from "./Utils.js";
+import { MovementUtils } from "../Utils.js";
 export class ElementMovementHandler {
     constructor(designingPageIframe) {
         this.eventHandlers = {

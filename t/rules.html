@@ -7,67 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <style>
-        body {
-            background-color: #4e4e4e;
-        }
 
-        .card {
-            padding: 10px 10px 10px 10px;
-            margin: 2px 2px 10px 2px;
-            border-radius: 10px;
-            color: white;
-            box-shadow: 0px 0px 12px #5c5c5c;
-
-        }
-
-        .btn {
-            font-size: 9pt;
-            margin: 5px;
-            border: 0.8px solid rgb(255, 255, 255);
-            padding: 5px;
-            border-radius: 5px;
-            transition: .2s ease-in-out;
-            cursor: default;
-            user-select: none;
-        }
-
-        .btn:hover {
-            background: white;
-            color: black;
-
-        }
-
-        /* .style-rule {
-
-  
-        } */
-
-
-        .style-rule-code {
-
-
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .style-rule-settings {
-
-            padding: 10px 10px 10px 10px;
-            background-color: #ffffff42;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-    </style>
 </head>
 
 <body>
 
     <div id="approot">
-        <style-rule-editing-component ref="visualStyleRuleEditor"></style-rule-editing-component>
+        <colorpicker></colorpicker>
+        <!-- <style-rule-editing-component ref="visualStyleRuleEditor"></style-rule-editing-component> -->
     </div>
-    <script src="../environment/app/assets/script/js/UI/Components/StyleRuleEditComponents.js"></script>
-
+    <!-- <script src="../environment/app/assets/script/js/UI/Components/StyleRuleEditComponents.js"></script> -->
+<script src="colorpicker/colorpickervue.js"></script>
     <script>
+        let color
         let subApplication = new Vue({
             el: "#approot",
             created(e) {

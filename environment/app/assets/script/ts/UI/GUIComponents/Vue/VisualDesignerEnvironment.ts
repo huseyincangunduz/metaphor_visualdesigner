@@ -15,7 +15,9 @@ export default Vue.component("visual-designer", {
                     @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" />
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
+
                 <style-rule-editing-component ref="elementSelectionEditor" />
+                
             </div>
         </div>
     </div>

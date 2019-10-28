@@ -1,24 +1,22 @@
 
-
-  .card {
+.card {
     padding: 10px 10px 10px 10px;
     margin: 2px 2px 10px 2px;
-    border-radius: 10px;
+    border-radius: 2px;
+    background-color: #00ACC1;
     color: white;
-    box-shadow: 0px 0px 12px #5c5c5c;
-
+    box-shadow: 0px 0px 12px rgb(0, 0, 0);
 }
 
-.card :not(.btn)
-{
+.card :not(.btn) {
     font-family: monospace;
 }
 
-.card[issub="true"]
-{
-    background-color: darkgoldenrod !important;
-    margin-left: 0px;
+.card[issub="true"] {
+    background-color: #26C6DA !important;
+    margin-left: 10px;
 }
+
 .btn {
     font-size: 9pt;
     margin: 3px;
@@ -33,11 +31,15 @@
 .btn:hover {
     background: white;
     color: black;
-
 }
+
+/* 
+.style-expand
+{
+    font-size: 26px;
+} */
 
 /* .style-rule {
 
 
 } */
-

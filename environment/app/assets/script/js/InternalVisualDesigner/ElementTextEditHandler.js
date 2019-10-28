@@ -1,5 +1,5 @@
 const METAPHOR_SUBTEXT = "metaphor-subtext";
-import { AncestorParentUtils } from "./Utils.js";
+import { AncestorParentUtils } from "../Utils.js";
 export class ElementTextEditHandler {
     constructor(iframeElement) {
         this.eventHandler = {

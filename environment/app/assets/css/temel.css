@@ -1,11 +1,86 @@
-*{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+input{
+    box-sizing: border-box;
+ 
 }
 
-body
-{
+::-webkit-scrollbar-track {
+    background-color: transparent;
+
+}
+
+::-webkit-scrollbar-track:active {
+
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(128, 128, 128);
+   
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    width: 10px;
+    background-color: rgba(128, 128, 128, 0.493);
+}
+
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+  height: 10px;
+    background: #ffffff00;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity background-color .2s;
+    margin: 10px 10px 10px 0px;
+
+  
+}
+
+input[type="range"]:hover {
+    background: #ffffff7a;
+    opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 10px;
+    background: #eeeeee;
+    border: 1px solid #eeeeee;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+:root {
+    --sysfont: "Poppins", "Helvetica", "Arial"
+}
+
+* {
+    font-family: var(--sysfont)
+}
+
+body {
     margin: 0px;
 }
+
 div.selectedElementResizer {
     position: absolute;
     border: 2px solid rgb(0, 148, 255);
@@ -17,22 +92,36 @@ div.selectedElementResizer {
     opacity: .5;
     transition: opacity .2s ease-in-out;
 }
-div.selectedElementResizer:hover
-{
+
+div.selectedElementResizer:hover {
     opacity: 1;
-    
-}
-
-
-.visualdesigner_foreground::-webkit-scrollbar , #visual-designer-container::-webkit-scrollbar, body::-webkit-scrollbar{
-    display: none;
 }
 
 .visualdesigner_foreground {
     overflow: visible;
 }
 
-.ghost-text-box .text-editing-area
-{
-    border: 1px black solid;display:inline-block; min-width: 20px; min-height: 20px;
+.ghost-text-box .text-editing-area {
+    border: 1px black solid;
+    display: inline-block;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.style-expand {
+    font-family: var(--sysfont);
+    content: "More";
+    text-align: center;
+    user-select: none;
+    opacity: .6;
+    transition: .3s;
+}
+
+.style-expand:hover {
+    opacity: 1;
+}
+
+.style-rule-code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10pt;
 }

@@ -1,4 +1,4 @@
-import * as Constants from "./VisualDesignerConst.js";
+import * as Constants from "./InternalVisualDesigner/VisualDesignerConst.js";
 
 export class TextControlling
 {
@@ -21,6 +21,14 @@ export class Range
     {
         this.min = min;
         this.max = max;
+    }
+    public limit(value : number)
+    {
+        return Range.limit(this.min,value, this.max)
+    }
+    public static limit(min : number, val : number, max : number)
+    {
+        return Math.min(max, Math.max(min, val));
     }
 }
 
