@@ -1,6 +1,7 @@
-import InternalVisualDesignerComponent from "./InternalVisualDesignerComponent.js";
+import InternalVisualDesignerComponent from "./InternalVisualDesigner.js";
 export default Vue.component("visual-designer", {
-    template: `<div class="metaphor-designer-root">
+    template: `
+<div class="metaphor-designer-root">
     <div class="topbar">
         <span class="topbar-right">
             <span @click="toggleOptionsToggleBtnClicked">Toggle Options</span>
@@ -8,13 +9,35 @@ export default Vue.component("visual-designer", {
     </div>
     <div class="editor-content-area">
         <div class="metaphor-designer" :right-panel-visible="rightPanelVisibility">
-
             <div ref="uiContentAreaContainer" class="internal-designer-area">
     
-                <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected"
-                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" />
+                <internal-visual-designer 
+                    ref="ivsComponent" 
+                    @element-selected="onElementSelected"
+                    @element-updated="onElementUpdated" 
+                    initialSrc="../editortests/anchoring.html" 
+                    
+                    />
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
+
+                <!-- TODO: ELEMENT SELECTION EDITOR 
+                           Görevler:
+                            -Element ID değiştirme
+                                seçilmiş element bilgisini tutan component bunu çalıştıracak
+                                    this.$emit("rename-element",newIDRequest,oldID);
+                                Visual Designer Environment'ta da şu tarz bir şey çalıştıracak
+                                    this.$refs.ivsComponent.renameElement = newId
+                            -Element attribute'leri değiştirme
+                            -Element Hızlı düzenleyici (Stil, Attribute, Stil sınıfı ekleme çıkarma) -->
+
+                <!-- TODO: PAGE META EDITOR 
+                            Görevler
+                                -Bağlılıklar ve NPM Paketleri kurulumu / kaldırılması
+                                -Stil değişkenleri
+                                -Stil sınıflarının düzenlenmesi
+                                -Dökümandaki elemanların ağaç gösterimi
+                                -->
 
                 <style-rule-editing-component ref="elementSelectionEditor" />
                 

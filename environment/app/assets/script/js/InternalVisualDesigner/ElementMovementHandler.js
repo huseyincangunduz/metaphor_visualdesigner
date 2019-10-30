@@ -18,7 +18,8 @@ export class ElementMovementHandler {
         return this.leftMouseBtnIsDown;
     }
     setClickedLocation(arg0) {
-        /*TODO: Eğer haraket ettirme alakalı sınıfı kullanırsak arg0'ı o sınıfa da aktarmalıyız.
+        /*TODO: Eğer haraket ettirme alakalı sınıfı kullanırsak
+        arg0'ı o sınıfa da aktarmalıyız.
         Aynı şekilde de tekrar boyutlandırma işleminde de*/
         this.startedLocation = arg0;
     }
