@@ -1,5 +1,5 @@
 import { TextControlling } from "../Utils.js";
-
+/** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
 class CommitParameter {
     public styleKeys: string[];
     public styleValues: { value: string; priority: string }[];
@@ -43,6 +43,8 @@ class CommitParameter {
 export enum StyleRuleState {
     normal, active, hover
 }
+
+
 export class StyleOtomator {
     editingStyleSheet: CSSStyleSheet;
     editingIframeDocument: Document;

@@ -139,3 +139,8 @@ export class TagsOnAnAttribute
         element.setAttribute(attribute,tag);
     }
 }
+
+export class ViewIndex
+{
+    
+}

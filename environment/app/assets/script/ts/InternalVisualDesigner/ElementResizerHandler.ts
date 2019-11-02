@@ -7,7 +7,9 @@ export class ElementResizeHandler {
     private designerIframe: HTMLIFrameElement;
     private designerIframeDocument: Document;
     private designerIframeWindow: Window;
-    /**TR: Yeniden boyutlandırma için kullanılan noktaların sadece seçileni vurgulamak için olduğunu, herhangi bir şekilde basılı tutarak ve sürükleyerek boyutlandırma işlemi yapılmayacağını ifade eder. EN: The resizer dots is only to highlight the selected one,means that there will be no sizing by holding down and dragging in any way.
+    /**TR: Yeniden boyutlandırma için kullanılan noktaların sadece seçileni vurgulamak için olduğunu, 
+     * herhangi bir şekilde basılı tutarak ve sürükleyerek boyutlandırma işlemi yapılmayacağını ifade eder. 
+     * EN: The resizer dots is only to highlight the selected one,means that there will be no sizing by holding down and dragging in any way.
      */
     private onlyEmphasizeDots: boolean;
     
@@ -62,25 +64,7 @@ export class ElementResizeHandler {
                 Y: ev.pageY - this.startupLocation.Y
             };
 
-
-
-            /*           if (ev.shiftKey) {
-                           if (this.resizingMode.horizontalMode != '' && this.resizingMode.verticalMode != ''
-                               && ((Math.abs(deltas.X) < 10 || Math.abs(deltas.Y) < 10) && !(Math.abs(deltas.X) < 10 && Math.abs(deltas.Y) < 10))) {
-                               if (Math.abs(deltas.X) > 10) {
-                                   let sgn = Math.sign(deltas.Y);
-                                   if (sgn == null || sgn == 0)  sgn = 1;
-                                   deltas.Y = deltas.X * sgn;
-           
-                               }
-                               else
-                                   if (Math.abs(deltas.Y) > 10) {
-                                       let sgn = (this.resizingMode.horizontalMode == 'r' && this.resizingMode.verticalMode == 'd' ) ? 1 : Math.sign(deltas.Y) ;
-                                       deltas.X = Math.abs(deltas.Y ) * sgn;
-                                   };
-                           }
-                       }
-           */
+//TODO: Bir tuş kombinasyonuyla orantılı olarak boyutlandırma
             this.resizingCallbacks.resizeAtX(
                 deltas.X,
                 this.pivot,

@@ -4,23 +4,31 @@ import { ElementTextEditHandler } from "./ElementTextEditHandler.js";
 const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 export class InternalVisualDesigner {
     constructor(bckgDivisionElement, iframeElement, frgDivisionElement) {
+        /** Internal Visual Designer (İç görsel tasarımcı) başlatıldı mı? */
         this.initialized = false;
+        /** Yeniden boyutlandığında */
         this.onResized = (element, pivot) => {
             console.info("resized: ");
             console.info(pivot);
+            //Resize'dan sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir 
             this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
+            //onResized olarak emit edilir (üst sınıflar tarafından ayarlanan onResized eventi çalıştırılır)
             this.eventHandlers.onResized(element, pivot);
         };
+        /**Haraket ettirildiğinde */
         this.onMoved = (element, pivot) => {
             console.info("moved: ");
             console.info(pivot);
+            //Haraket ettirmeden sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir
             this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
             // if (pivot.id == "mabel") {
             //     this.styleOtomation.commitStyleElement(pivot, StyleRuleState.hover);
             // }
+            //onMoved olarak emit edilir (üst sınıflar tarafından ayarlanan onMoved eventi çalıştırılır)
             this.eventHandlers.onMoved(element, pivot);
         };
         this.onSelected = (element, pivot, styleRule) => {
+            //onSelected olarak emit edilir (üst sınıflar tarafından ayarlanan onSelected eventi çalıştırılır)
             this.eventHandlers.onSelected(element, pivot, styleRule);
         };
         this.onEnteredTextChangeMode = (editingElement) => {

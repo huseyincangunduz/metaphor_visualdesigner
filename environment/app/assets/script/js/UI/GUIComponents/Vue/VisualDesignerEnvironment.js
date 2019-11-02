@@ -10,16 +10,12 @@ export default Vue.component("visual-designer", {
     <div class="editor-content-area">
         <div class="metaphor-designer" :right-panel-visible="rightPanelVisibility">
             <div ref="uiContentAreaContainer" class="internal-designer-area">
-    
-                <internal-visual-designer 
-                    ref="ivsComponent" 
-                    @element-selected="onElementSelected"
-                    @element-updated="onElementUpdated" 
-                    initialSrc="../editortests/anchoring.html" 
-                    
-                    />
+
+                <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected"
+                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" />
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
+
 
                 <!-- TODO: ELEMENT SELECTION EDITOR 
                            Görevler:
@@ -38,13 +34,17 @@ export default Vue.component("visual-designer", {
                                 -Stil sınıflarının düzenlenmesi
                                 -Dökümandaki elemanların ağaç gösterimi
                                 -->
+                <tab-control>
+                  <tab-page name="Element Properties" :selected="true">     <style-rule-editor ref="elementSelectionEditor" /> </tab-page>  
+                  <tab-page name="Page"> Not for now </tab-page>  
+                </tab-control>
+            
 
-                <style-rule-editing-component ref="elementSelectionEditor" />
-                
             </div>
         </div>
     </div>
-</div>`,
+</div>
+`,
     components: {
         InternalVisualDesignerComponent
     },

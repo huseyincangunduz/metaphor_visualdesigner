@@ -7,33 +7,50 @@ import { StyleOtomator, StyleRuleState } from "./StyleOtomator.js"
 import { ElementTextEditHandler } from "./ElementTextEditHandler.js";
 const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 export class InternalVisualDesigner {
+    /** Internal Visual Designer (İç görsel tasarımcı) başlatıldı mı? */
     initialized: boolean = false;
+    /** Bağlı olunan Vue Componenti */
     public internalDesignerComponent : VueComponent;
+    /** İçerisinde IVD(İGT) saklanan element */
     public containerHTMLElement: HTMLDivElement;
+    /**Varsayılan olarak düzenlenen CSS Sayfası dosyası.  */
     mainEditingStyleSheet: CSSStyleSheet;
+    /** Düzenlenen Iframe Dökümanı */
     editingIframeDocument: HTMLDocument;
+    /** Düzenlenen Iframe globalleri */
     editingIframeWindow: Window;
+    /** Element seçimleri ve hareket ettirme, yeniden boyutlandırma gibi olaylarla ilgili olan özel sınıftır. Bu sınıfın içerisinde; Iframe'de açılan elementlere bir takım görev
+     * yükleyerek bazı eventlara sahip olacaktır.
+     */
     elementSelectionMovementHandler: ElementSelectionAndMovementManager;
+    /** Stilleri ekleme, çıkarma, işlemek(committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) işleri için kullanılan sınıf */
     styleOtomation: StyleOtomator;
+    /** HTML İçindeki metinleri düzenlemek ile görevli sınıftır. Bu Iframe içerisindeki elementlere event ekleyerek çalışmaktadır. */
     textEditingHandler: ElementTextEditHandler;
     
+    /** Yeniden boyutlandığında */
     onResized = (element, pivot) => {
         console.info("resized: ");
         console.info(pivot);
+        //Resize'dan sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir 
         this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
+        //onResized olarak emit edilir (üst sınıflar tarafından ayarlanan onResized eventi çalıştırılır)
         this.eventHandlers.onResized(element,pivot);
     }
+    /**Haraket ettirildiğinde */
     onMoved = (element, pivot) => {
         console.info("moved: ");
         console.info(pivot);
-
+        //Haraket ettirmeden sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir
         this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
         // if (pivot.id == "mabel") {
         //     this.styleOtomation.commitStyleElement(pivot, StyleRuleState.hover);
         // }
+        //onMoved olarak emit edilir (üst sınıflar tarafından ayarlanan onMoved eventi çalıştırılır)
         this.eventHandlers.onMoved(element,pivot);
     }
     onSelected = (element, pivot, styleRule) => {
+        //onSelected olarak emit edilir (üst sınıflar tarafından ayarlanan onSelected eventi çalıştırılır)
         this.eventHandlers.onSelected(element,pivot,styleRule)
     }
     onEnteredTextChangeMode = (editingElement) => {

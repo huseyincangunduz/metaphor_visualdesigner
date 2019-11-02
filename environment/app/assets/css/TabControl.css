@@ -1,0 +1,31 @@
+.tab-pages-header{
+    display: flex;
+}
+
+.tab-pages-header ul{
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0px;
+    flex-grow: 1;
+}
+
+.tab-pages-header ul li{
+    display: block;
+}
+.tab-pages-header li a{
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    user-select: none;
+    border-bottom: white 0px solid;
+    transition: .1s ease-in-out;
+    opacity: .9;
+}
+.tab-pages-header li:hover a{
+    opacity: 1;
+
+}
+.tab-pages-header li.is-active a{
+    opacity: 1;
+    border-bottom: white 1px solid;
+}

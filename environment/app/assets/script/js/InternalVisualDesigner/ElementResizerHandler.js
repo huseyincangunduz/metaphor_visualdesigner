@@ -31,23 +31,7 @@ export class ElementResizeHandler {
                     X: ev.pageX - this.startupLocation.X,
                     Y: ev.pageY - this.startupLocation.Y
                 };
-                /*           if (ev.shiftKey) {
-                               if (this.resizingMode.horizontalMode != '' && this.resizingMode.verticalMode != ''
-                                   && ((Math.abs(deltas.X) < 10 || Math.abs(deltas.Y) < 10) && !(Math.abs(deltas.X) < 10 && Math.abs(deltas.Y) < 10))) {
-                                   if (Math.abs(deltas.X) > 10) {
-                                       let sgn = Math.sign(deltas.Y);
-                                       if (sgn == null || sgn == 0)  sgn = 1;
-                                       deltas.Y = deltas.X * sgn;
-               
-                                   }
-                                   else
-                                       if (Math.abs(deltas.Y) > 10) {
-                                           let sgn = (this.resizingMode.horizontalMode == 'r' && this.resizingMode.verticalMode == 'd' ) ? 1 : Math.sign(deltas.Y) ;
-                                           deltas.X = Math.abs(deltas.Y ) * sgn;
-                                       };
-                               }
-                           }
-               */
+                //TODO: Bir tuş kombinasyonuyla orantılı olarak boyutlandırma
                 this.resizingCallbacks.resizeAtX(deltas.X, this.pivot, null, this.pivotStartSize.Width, this.pivotOffset.left);
                 this.resizingCallbacks.resizeAtY(deltas.Y, this.pivot, null, this.pivotStartSize.Height, this.pivotOffset.top);
                 this.updateDots();

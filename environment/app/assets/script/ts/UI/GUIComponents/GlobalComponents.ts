@@ -3,13 +3,13 @@ import { StyleOtomator, StyleRuleState } from "../../InternalVisualDesigner/Styl
 
 //Primitive Components
 import "./Vue/Primitives/GhostTextBox.js";
-
+import "./Vue/Primitives/TabControl.js"
 //ElementSetters
 import "./Vue/StyleSetters/FontWeightSetter.js"
 import "./Vue/StyleSetters/FontSizeSetter.js"
 import "./Vue/StyleSetters/ColorSetter.js"
 //metaphor
-import "./Vue/StylesComponent.js";
+import "./Vue/StyleRuleEditor.js";
 import "./Vue/StyleAdder.js";
 import "./Vue/StyleChanger.js";
 import "./Vue/InternalVisualDesigner.js";

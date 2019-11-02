@@ -1,4 +1,5 @@
 import { TextControlling } from "../Utils.js";
+/** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
 class CommitParameter {
     constructor() {
         this.styleKeys = [];

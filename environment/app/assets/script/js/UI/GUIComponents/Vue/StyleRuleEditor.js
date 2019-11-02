@@ -1,7 +1,7 @@
 import StyleChanger from "./StyleChanger.js";
 import StyleAdder from "./StyleAdder.js";
 import { StyleObjectCollector } from "../UIEditIntegrationUtils/StyleArrange.js";
-export default Vue.component("style-rule-editing-component", {
+export default Vue.component("style-rule-editor", {
     template: `<div>
                     <h1> {{ elementSelectorText }} </h1>
                             <div v-for="{StyleKey, StyleValue, subModifiers} in styleObject">                          

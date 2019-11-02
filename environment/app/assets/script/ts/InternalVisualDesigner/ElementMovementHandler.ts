@@ -1,21 +1,39 @@
 
 import { MovementUtils, Range } from "../Utils.js";
 export class ElementMovementHandler {
+    /**
+     * Bir işlemin bitişinde tetiklenecek callback fonksiyonlarını tutan objedir
+     */
     eventHandlers = {
+        /**
+         * Elementin haraket ettirdikten sonra tetiklenecek metoddur.
+         */
         onMoved: (elements: Array<HTMLElement | EventTarget>, pivot: HTMLElement) => {
 
         }
     }
-
+   /**
+     * Bir işlemin bitişinde tetiklenecek callback fonksiyonlarını değiştirmeye yarayan metodları saklar
+     */
     eventHandlerSetter = {
         setOnMovedCallback: (callback) => {
             this.eventHandlers.onMoved = callback;
         }
     }
 
+    /**
+     * Üzerine tıklanılan herhangi bir elementtir. Bu element, her zaman seçilidir ancak diğer seçilmiş elemanlardan farklı olarak oynatma ve benzeri işlerde
+     * bunun üzerinde yapılan bir elementtir.
+     */
     pivot: HTMLElement;
+    /**
+     * Daha kullanılmadı - Seçili elementlerin tümü
+     */
     selectedElements: Array<HTMLElement | EventTarget>
+    /**Sol Mouse Butonu basılı mı? */
     private leftMouseBtnIsDown: boolean;
+
+
     isHolded() : boolean{
         return this.leftMouseBtnIsDown;
     }
@@ -41,6 +59,8 @@ export class ElementMovementHandler {
         this.startedLocation = arg0;
 
     }
+
+    /** Eleman seçimi yapılan işlemdir. Bu işlemde gerekli eleman seçilir, tutulur. */
     hold(ev: MouseEvent, holdedElements: Array<Element>) {
         //@ts-ignore
         if (ev.target instanceof this.DesigningPageIframeWin.HTMLElement) {

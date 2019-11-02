@@ -5,7 +5,7 @@ import { StyleObjectCollector, StyleOverrideManager, StyleObject } from "../UIEd
 
 
 
-export default Vue.component("style-rule-editing-component", {
+export default Vue.component("style-rule-editor", {
     template: `<div>
                     <h1> {{ elementSelectorText }} </h1>
                             <div v-for="{StyleKey, StyleValue, subModifiers} in styleObject">                          
@@ -56,7 +56,7 @@ export default Vue.component("style-rule-editing-component", {
     },
     methods: {
         
-        showModifier(a) {
+        showModifier(a: string) {
             var dizi : Array<string> = this.showingSubModifiers;
             var dizi_index = dizi.indexOf(a);
             if (dizi_index == -1)

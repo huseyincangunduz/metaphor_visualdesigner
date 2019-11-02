@@ -1,10 +1,19 @@
 import { MovementUtils } from "../Utils.js";
 export class ElementMovementHandler {
     constructor(designingPageIframe) {
+        /**
+         * Bir işlemin bitişinde tetiklenecek callback fonksiyonlarını tutan objedir
+         */
         this.eventHandlers = {
+            /**
+             * Elementin haraket ettirdikten sonra tetiklenecek metoddur.
+             */
             onMoved: (elements, pivot) => {
             }
         };
+        /**
+          * Bir işlemin bitişinde tetiklenecek callback fonksiyonlarını değiştirmeye yarayan metodları saklar
+          */
         this.eventHandlerSetter = {
             setOnMovedCallback: (callback) => {
                 this.eventHandlers.onMoved = callback;
@@ -23,6 +32,7 @@ export class ElementMovementHandler {
         Aynı şekilde de tekrar boyutlandırma işleminde de*/
         this.startedLocation = arg0;
     }
+    /** Eleman seçimi yapılan işlemdir. Bu işlemde gerekli eleman seçilir, tutulur. */
     hold(ev, holdedElements) {
         //@ts-ignore
         if (ev.target instanceof this.DesigningPageIframeWin.HTMLElement) {
