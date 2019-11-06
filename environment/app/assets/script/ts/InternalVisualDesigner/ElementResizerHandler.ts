@@ -64,7 +64,9 @@ export class ElementResizeHandler {
                 Y: ev.pageY - this.startupLocation.Y
             };
 
-//TODO: Bir tuş kombinasyonuyla orantılı olarak boyutlandırma
+/*
+            TODO: Bir tuş kombinasyonuyla orantılı olarak boyutlandırma
+            FIXME: Sol-Sağ ya da Sağ yaslanan elementte sağdaki herhangi bir resizer noktasına tıklandığı zaman tekrar element sağa kayıyor için (absolute position) da tıklanan a*/
             this.resizingCallbacks.resizeAtX(
                 deltas.X,
                 this.pivot,

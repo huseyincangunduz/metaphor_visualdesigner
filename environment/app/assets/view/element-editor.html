@@ -1,0 +1,12 @@
+<div v-show="editingPivotElement">
+        <h1> {{ elementSelectorText }} </h1>
+        <tab-control>
+            <tab-page name="Overview" :is-selected="true">
+                Genel Bakış
+            </tab-page>
+            <tab-page name="Styles" :is-selected="true">
+                <!-- TODO: Durumları unutma koçm -->
+                <style-rule-editor ref="styleEditor"/>
+            </tab-page>
+        </tab-control>
+</div>

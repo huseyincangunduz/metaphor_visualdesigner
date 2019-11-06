@@ -1,50 +1,7 @@
 import InternalVisualDesignerComponent from "./InternalVisualDesigner.js";
+import { ViewIndex } from "../../../Utils.js";
 export default Vue.component("visual-designer", {
-    template: `
-<div class="metaphor-designer-root">
-    <div class="topbar">
-        <span class="topbar-right">
-            <span @click="toggleOptionsToggleBtnClicked">Toggle Options</span>
-        </span>
-    </div>
-    <div class="editor-content-area">
-        <div class="metaphor-designer" :right-panel-visible="rightPanelVisibility">
-            <div ref="uiContentAreaContainer" class="internal-designer-area">
-
-                <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected"
-                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" />
-            </div>
-            <div ref="uiRightPanelContainer" class="right-panel">
-
-
-                <!-- TODO: ELEMENT SELECTION EDITOR 
-                           Görevler:
-                            -Element ID değiştirme
-                                seçilmiş element bilgisini tutan component bunu çalıştıracak
-                                    this.$emit("rename-element",newIDRequest,oldID);
-                                Visual Designer Environment'ta da şu tarz bir şey çalıştıracak
-                                    this.$refs.ivsComponent.renameElement = newId
-                            -Element attribute'leri değiştirme
-                            -Element Hızlı düzenleyici (Stil, Attribute, Stil sınıfı ekleme çıkarma) -->
-
-                <!-- TODO: PAGE META EDITOR 
-                            Görevler
-                                -Bağlılıklar ve NPM Paketleri kurulumu / kaldırılması
-                                -Stil değişkenleri
-                                -Stil sınıflarının düzenlenmesi
-                                -Dökümandaki elemanların ağaç gösterimi
-                                -->
-                <tab-control>
-                  <tab-page name="Element Properties" :selected="true">     <style-rule-editor ref="elementSelectionEditor" /> </tab-page>  
-                  <tab-page name="Page"> Not for now </tab-page>  
-                </tab-control>
-            
-
-            </div>
-        </div>
-    </div>
-</div>
-`,
+    template: ViewIndex.getViewSync("visual-designer-environment"),
     components: {
         InternalVisualDesignerComponent
     },
@@ -66,13 +23,15 @@ export default Vue.component("visual-designer", {
         },
         onElementSelected(element, pivot, ruleStyle) {
             console.info(element, pivot, ruleStyle);
-            this.$refs.elementSelectionEditor.editingPivotElement = pivot;
-            this.$refs.elementSelectionEditor.styleRule = ruleStyle.style;
-            this.$refs.elementSelectionEditor.elementSelectorText = pivot.tagName + "#" + pivot.id;
+            this.$refs.elementEditor.sendChanges({
+                editingPivotElement: pivot,
+                styleRule: ruleStyle.style,
+                elementSelectorText: pivot.tagName + "#" + pivot.id
+            });
             console.info({ ruleStyle });
         },
         onElementUpdated() {
-            this.$refs.elementSelectionEditor.updateSelectedElementInfo();
+            this.$refs.elementEditor.refreshStyleRule();
         }
     }
 });

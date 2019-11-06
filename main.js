@@ -25,10 +25,15 @@ function createWindow() {
 protocol.registerStandardSchemes(['metaphor'])
 
 function fileToMime(fileFullPath) {
-
+  // fileFullPath_ = fileFullPath;
   while (fileFullPath.endsWith("/")) {
     fileFullPath = fileFullPath.substring(0, fileFullPath.lastIndexOf('/'));
   }
+  // if(fileFullPath.indexOf("assets/js/")> -1)
+  // {
+  //   return 'text/javascript';
+  // }
+
   //console.log(fileFullPath);
 
   var extMimeKeys = [

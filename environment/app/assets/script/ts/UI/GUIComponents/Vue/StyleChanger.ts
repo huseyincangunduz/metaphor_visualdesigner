@@ -1,32 +1,10 @@
 import { StyleSetterComponents } from "../UIEditIntegrationUtils/StyleSetterDefinitions.js";
+import { ViewIndex } from "../../../Utils.js";
 
 export default Vue.component("style-changer",
     {
         template: 
-        `<div>
-                    
-                        <div class="card style-rule" ref="card" :isSub="isSubModifier" >
-                             
-                                <div>
-                                    
-                                    <div class="style-key-value-container">
-                                        <span class="btn" @click ="removeStyle">Remove</span>
-                                        <span class="style-rule-code">
-                                            <span>
-                                                <span class="style-modifier">{{styleKey}}</span>: 
-                                                <ghost-text-box class="style-value" :initialText="styleValue" @textchanged="valueChanged"/>
-                                                <span>;</span>       
-                                            </span>                                  
-                                        </span>
-                                    </div>
-                                    <div v-show="showExpandSubModifierBtn" class="style-expand"  @click="cardOnClick">More</div>  
-
-                                    <div v-if="determineStyleSetter() != 'default'" class="setter-ui" ref="styleSetterContainer">
-                                        <component :is="determineStyleSetter()" :initial-key="styleKey" :initial-val="styleValue" @stl-ui-set="styleUISet"/>
-                                    </div>
-                            </div>
-                        </div> 
-        </div>`,
+        ViewIndex.getViewSync("style-changer"),
         props: {
             color: {
                 type: String,

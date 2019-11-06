@@ -1,0 +1,28 @@
+<div>
+                    
+    <div class="card style-rule" ref="card" :isSub="isSubModifier" >
+         
+        
+                
+                <div class="style-key-value-container">
+                    
+                    <div class="style-rule-code">
+                        <span>
+                            <span class="style-modifier">{{styleKey}}</span>: 
+                            <ghost-text-box class="style-value" :initialText="styleValue" @textchanged="valueChanged"/>
+                            <span>;</span>       
+                        </span>                                  
+                    </div>
+                    <div class="buttons">
+                        <div class="btn" @click ="removeStyle">Remove</div>
+                    </div>
+                   
+                </div>
+                <div v-show="showExpandSubModifierBtn" class="style-expand"  @click="cardOnClick">More</div>  
+
+                <div v-if="determineStyleSetter() != 'default'" class="setter-ui" ref="styleSetterContainer">
+                    <component :is="determineStyleSetter()" :initial-key="styleKey" :initial-val="styleValue" @stl-ui-set="styleUISet"/>
+                </div>
+     
+    </div> 
+</div>

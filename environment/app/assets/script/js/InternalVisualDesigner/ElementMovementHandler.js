@@ -32,7 +32,9 @@ export class ElementMovementHandler {
         Aynı şekilde de tekrar boyutlandırma işleminde de*/
         this.startedLocation = arg0;
     }
-    /** Eleman seçimi yapılan işlemdir. Bu işlemde gerekli eleman seçilir, tutulur. */
+    /** Eleman seçimi yapılan işlemdir. Bu işlemde gerekli eleman seçilir, tutulur. Diğer seçilenler de eklenebilir ancak arayüze bu özellik eklenmedi. Yine de seçilenler tutulacak şekilde
+     * var
+     */
     hold(ev, holdedElements) {
         //@ts-ignore
         if (ev.target instanceof this.DesigningPageIframeWin.HTMLElement) {

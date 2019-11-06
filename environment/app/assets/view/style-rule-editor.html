@@ -1,0 +1,29 @@
+<div>
+
+            <div v-for="{StyleKey, StyleValue, subModifiers} in styleObject">                          
+                
+            <style-changer 
+                :show-expand-sub-modifier-btn="subModifiers != null && subModifiers.length > 0"
+                    :initialStylekey="StyleKey" 
+                    :initialStyleval="StyleValue" 
+                    :key="StyleKey"
+                     @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
+                    at_style-change-cancellation="styleChangingCancelled"
+                    @click="() => showModifier(StyleKey)">
+                </style-changer>
+
+                <div v-if="subModifiers != null && subModifiers.length > 0" 
+                v-show="subModifierIsShowing(StyleKey)">
+                    <div v-for="{StyleKey, StyleValue} in subModifiers">                          
+                        <style-changer :is-sub-modifier="true" :initialStylekey="StyleKey" 
+                            :initialStyleval="StyleValue" 
+                            :key="StyleKey" @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
+                            at_style-change-cancellation="styleChangingCancelled">
+                        </style-changer>
+                    </div>
+                </div>
+
+            </div>
+
+            <style-adder @style-added="styleIsAdded" />
+</div>

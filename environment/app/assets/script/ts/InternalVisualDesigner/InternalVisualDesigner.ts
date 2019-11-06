@@ -111,7 +111,9 @@ export class InternalVisualDesigner {
     }
 
 
-
+    /** IVD'yi asıl başlatan fonksiyondur
+     * inşa edilirken eğer foreground div ve background div null gelmediyse zaten otomatik olarak başlatılacaktır.
+     */
     initialize(bckgDivisionElement: HTMLDivElement, iframeElement: HTMLIFrameElement, frgDivisionElement: HTMLDivElement) {
         this.editingIframeWindow = iframeElement.contentWindow;
         this.editingIframeDocument = this.editingIframeWindow.document;
@@ -135,9 +137,9 @@ export class InternalVisualDesigner {
 
         for (let i = 0; i < stlsheets.length; i++) {
             let stylesheet = stlsheets.item(i);
-            //@ts-ignore iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
+            //@ts-ignore FIXME: iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
             if (stylesheet instanceof this.editingIframeWindow.CSSStyleSheet && stylesheet.ownerNode["id"] == EDITING_STYLESHEET_ID) {
-                //@ts-ignore iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
+                //@ts-ignore FIXME: iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
                 return stylesheet;
             }
 
@@ -178,6 +180,7 @@ export class InternalVisualDesigner {
         let ivd = new InternalVisualDesigner(null, null, null);
         iframeElement.onload = () => {
             //ivd.refreshElementEditEvents();
+            //Sayfa yüklenmeden kurulum yapılmaması daha iyi...
             ivd.initialize(bckDivElement, iframeElement, foregroundDivElement);
             ivd.internalDesignerComponent = internalDesignerComponent;
             ivd.containerHTMLElement = containerElement;

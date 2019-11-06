@@ -1,0 +1,13 @@
+<div>
+    <div class="tab-pages-header">
+        <ul>
+            <li v-for="tab in tabs" @click="selectTab(tab)" :class="{ 'is-active': tab.isActive }">
+                <a>{{ tab.name }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tabs-details">
+        <slot></slot>
+    </div>
+</div>

@@ -1,36 +1,9 @@
 import StyleChanger from "./StyleChanger.js";
 import StyleAdder from "./StyleAdder.js";
+import { ViewIndex } from "../../../Utils.js";
 import { StyleObjectCollector } from "../UIEditIntegrationUtils/StyleArrange.js";
 export default Vue.component("style-rule-editor", {
-    template: `<div>
-                    <h1> {{ elementSelectorText }} </h1>
-                            <div v-for="{StyleKey, StyleValue, subModifiers} in styleObject">                          
-                                
-                            <style-changer 
-                                :show-expand-sub-modifier-btn="subModifiers != null && subModifiers.length > 0"
-                                    :initialStylekey="StyleKey" 
-                                    :initialStyleval="StyleValue" 
-                                    :key="StyleKey"
-                                     @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
-                                    at_style-change-cancellation="styleChangingCancelled"
-                                    @click="() => showModifier(StyleKey)">
-                                </style-changer>
-
-                                <div v-if="subModifiers != null && subModifiers.length > 0" 
-                                v-show="subModifierIsShowing(StyleKey)">
-                                    <div v-for="{StyleKey, StyleValue} in subModifiers">                          
-                                        <style-changer :is-sub-modifier="true" :initialStylekey="StyleKey" 
-                                            :initialStyleval="StyleValue" 
-                                            :key="StyleKey" @style-changed="styleIsChanged" @style-removed="styleIsRemoved"
-                                            at_style-change-cancellation="styleChangingCancelled">
-                                        </style-changer>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <style-adder @style-added="styleIsAdded" />
-                </div>`,
+    template: ViewIndex.getViewSync("style-rule-editor"),
     components: { StyleChanger, StyleAdder },
     data: function () {
         return {

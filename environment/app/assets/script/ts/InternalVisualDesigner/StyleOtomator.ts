@@ -1,6 +1,7 @@
 import { TextControlling } from "../Utils.js";
+import { AbsoluteAnchorer } from "./AbsoluteAnchorer.js";
 /** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
-class CommitParameter {
+export class CommitParameter {
     public styleKeys: string[];
     public styleValues: { value: string; priority: string }[];
     public removeKeys: string[];
@@ -38,6 +39,10 @@ class CommitParameter {
             this.styleKeys.push(key);
         }
 
+    }
+    public dontTouch(key : string)
+    {
+        this.removeFromWillBeRemovedArray(key);
     }
 }
 export enum StyleRuleState {
@@ -118,76 +123,9 @@ export class StyleOtomator {
     adaptAnchoring(elementRelatedStyle: CSSStyleRule, commitParam: CommitParameter, editingElement: HTMLElement, computedStyle: CSSStyleDeclaration) {
         //Sağa sola yaslanma olayına karar ver
 
-        //@ts-ignore
-        if (elementRelatedStyle.style.position == "absolute" || elementRelatedStyle.style.position == "fixed") {
-            // document.scrol
+        AbsoluteAnchorer.modify(elementRelatedStyle.style, computedStyle,commitParam,editingElement);
+        return;
 
-            
-
-
-
-
-
-            if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
-
-                let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
-                
-                //editingElement.style.setProperty("right", computedStyle.right);
-                
-                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left))
-                {
-                    if (!commitParam.styleValues["width"])
-                    editingElement.style.setProperty("right", computedStyle.right);
-                    else
-                    editingElement.style.setProperty("right", "unset");
-                }
-           
-                else if (thereWasInlineStlLeftAtStart) {
-                    elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
-                }
-
-                if (!thereWasInlineStlLeftAtStart) {
-                    editingElement.style.setProperty("left", computedStyle.left);
-                }
-
-             
-                editingElement.style.setProperty("width", computedStyle.width);
-                // if (TextControlling.isEmpty(editingElement.style.width)) {
-                //     editingElement.style.setProperty("width", computedStyle.width);
-                // }
-             
-
-//Commiting
-                if (TextControlling.isEmpty(elementRelatedStyle.style.left)) {
-                    commitParam.addProperty("left", null);
-                    if (elementRelatedStyle.style.width) {
-                        commitParam.addProperty("width", computedStyle.width);
-                        
-                    }
-                    else if(!commitParam.styleValues["width"])
-                    {
-                        commitParam.addProperty("width", null);
-                    } 
-                    
-    
-    
-                }
-                else {
-                    commitParam.addProperty("left",  computedStyle.left);
-                    commitParam.addProperty("width", null);
-                }
-                   
-
- 
-
-               
-                commitParam.addProperty("right", computedStyle.right);
-              
-                /*if (isEmpty(elementRelatedStyle.style.left)) {
-                    commitParam.addProperty("left", null);
-                }*/
-            }
-        }
     }
 
 
@@ -196,7 +134,7 @@ export class StyleOtomator {
 
         //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te
         //ne kadar kendi taginde element varsa sonundaki sayı okadar olur
-        
+        //TODO: Element isimlendirmesini başka fonksiyonda yap        
         if (TextControlling.isEmpty(editingElement.id)) {
             let newID = "";
             let doc = editingElement.ownerDocument;

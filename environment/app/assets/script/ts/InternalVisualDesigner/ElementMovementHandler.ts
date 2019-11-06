@@ -60,7 +60,9 @@ export class ElementMovementHandler {
 
     }
 
-    /** Eleman seçimi yapılan işlemdir. Bu işlemde gerekli eleman seçilir, tutulur. */
+    /** Eleman seçimi yapılan işlemdir. Bu işlemde gerekli eleman seçilir, tutulur. Diğer seçilenler de eklenebilir ancak arayüze bu özellik eklenmedi. Yine de seçilenler tutulacak şekilde 
+     * var
+     */
     hold(ev: MouseEvent, holdedElements: Array<Element>) {
         //@ts-ignore
         if (ev.target instanceof this.DesigningPageIframeWin.HTMLElement) {

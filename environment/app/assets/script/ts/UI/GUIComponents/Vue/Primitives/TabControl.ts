@@ -1,19 +1,23 @@
-Vue.component('tab-control', {
-    template: `
-        <div>
-            <div class="tab-pages-header">
-              <ul>
-                <li v-for="tab in tabs" :class="{ 'is-active': tab.isActive }">
-                    <a @click="selectTab(tab)">{{ tab.name }}</a>
-                </li>
-              </ul>
-            </div>
+import { ViewIndex } from "../../../../Utils.js";
 
-            <div class="tabs-details">
-                <slot></slot>
-            </div>
-        </div>
-    `,
+Vue.component('tab-control', {
+    template: ViewIndex.getViewSync("tab-control"/*,`
+
+    <div>
+    THIS IS TABCONTROL, BUT getView function is fucked up
+    <div class="tab-pages-header">
+        <ul>
+            <li v-for="tab in tabs" :class="{ 'is-active': tab.isActive }">
+                <a @click="selectTab(tab)">{{ tab.name }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tabs-details">
+        <slot></slot>
+    </div>
+</div>
+    `*/),
     
     data() {
         return {    tabs: this.$children ? this.$children  : [] };
@@ -45,7 +49,8 @@ Vue.component('tab-page', {
     
     props: {
         name: { required: true },
-        selected: { default: false}
+        selected: { default: false },
+
     },
     
     data() {

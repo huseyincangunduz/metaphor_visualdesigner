@@ -1,6 +1,7 @@
 import { TextControlling } from "../Utils.js";
+import { AbsoluteAnchorer } from "./AbsoluteAnchorer.js";
 /** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
-class CommitParameter {
+export class CommitParameter {
     constructor() {
         this.styleKeys = [];
         this.styleValues = [];
@@ -33,6 +34,9 @@ class CommitParameter {
         if (this.styleKeys.indexOf(key) == -1) {
             this.styleKeys.push(key);
         }
+    }
+    dontTouch(key) {
+        this.removeFromWillBeRemovedArray(key);
     }
 }
 export var StyleRuleState;
@@ -93,6 +97,8 @@ export class StyleOtomator {
     */
     adaptAnchoring(elementRelatedStyle, commitParam, editingElement, computedStyle) {
         //Sağa sola yaslanma olayına karar ver
+        AbsoluteAnchorer.modify(elementRelatedStyle.style, computedStyle, commitParam, editingElement);
+        return;
         //@ts-ignore
         if (elementRelatedStyle.style.position == "absolute" || elementRelatedStyle.style.position == "fixed") {
             // document.scrol
@@ -140,6 +146,7 @@ export class StyleOtomator {
         let rulelist;
         //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te
         //ne kadar kendi taginde element varsa sonundaki sayı okadar olur
+        //TODO: Element isimlendirmesini başka fonksiyonda yap        
         if (TextControlling.isEmpty(editingElement.id)) {
             let newID = "";
             let doc = editingElement.ownerDocument;

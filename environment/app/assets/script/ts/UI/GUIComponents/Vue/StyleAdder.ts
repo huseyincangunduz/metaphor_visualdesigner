@@ -1,26 +1,9 @@
 import { StyleSetterComponents } from "../UIEditIntegrationUtils/StyleSetterDefinitions.js";
+import { ViewIndex } from "../../../Utils.js";
 
 export default Vue.component("style-adder",
     {
-        template: `
-        <div class="card style-rule" :style="{backgroundColor: color}">
-            <div>
-                <div v-show="editingMode">
-                    <span>
-                        <span class="btn" @click="addStyle">Add</span>
-                        <span ref="styleKeyTextSpan" class="style-rule-code style-value style-value-edit" contentEditable="true" @blur="lostFocusWithoutStyleApply" @keydown="valueKeyDown"></span>
-                    </span>    
-                </div>
-
-
-                <div v-show="!editingMode">
-                    <span>                       
-                        <span style="min-width: 200px; font-style: oblique" v-show="!editingMode" @click="enterEditing" @keydown="enterEditing">Type style key for add</span>
-                    </span>
-        
-                </div>
-            </div>
-        </div>`,
+        template: ViewIndex.getViewSync("style-adder"),
 
             data: function()
             {

@@ -100,4 +100,33 @@ export class TagsOnAnAttribute {
     }
 }
 export class ViewIndex {
+    static getViewSync(name, defaultValue = "") {
+        if (TextControlling.isNotEmpty(ViewIndex.indexes[name])) {
+            return ViewIndex.indexes[name];
+        }
+        else {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "./assets/view/" + name + ".html", false);
+            /* HACK:  Senkron AJAX'lar 'deprecated' olarak işaretlendi. */
+            xhr.send("sesa");
+            if (TextControlling.isNotEmpty(xhr.responseText)) {
+                ViewIndex.indexes[name] = xhr.responseText;
+                return xhr.responseText;
+            }
+            else {
+                return defaultValue;
+            }
+        }
+        // xhr.timeout = 10000;
+    }
+    static getViewAsync(name, callback, defaultValue = "") {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "assets/view/" + name + ".html", true);
+        xhr.send("sesa");
+        xhr.onload = (e) => {
+            // if (e.)
+        };
+        return xhr.responseText ? xhr.responseText : defaultValue;
+    }
 }
+ViewIndex.indexes = {};
