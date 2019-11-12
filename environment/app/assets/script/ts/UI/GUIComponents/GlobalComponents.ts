@@ -2,7 +2,7 @@ import { InternalVisualDesigner } from "../../InternalVisualDesigner/InternalVis
 import { StyleOtomator, StyleRuleState } from "../../InternalVisualDesigner/StyleOtomator.js";
 
 //Primitive Components
-import "./Vue/Primitives/GhostTextBox.js";
+import "./Vue/Primitives/TextBox.js";
 import "./Vue/Primitives/TabControl.js"
 //ElementSetters
 import "./Vue/StyleSetters/FontWeightSetter.js"

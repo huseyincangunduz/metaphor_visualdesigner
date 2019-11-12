@@ -38,7 +38,9 @@ export class ElementMovementHandler {
     hold(ev, holdedElements) {
         //@ts-ignore
         if (ev.target instanceof this.DesigningPageIframeWin.HTMLElement) {
+            //text seçmeye çalışmasın diye
             ev.preventDefault();
+            //seçili elementleri kopyalayalım ve her değişiklikte uçup gitmesinler
             this.selectedElements = holdedElements.copyWithin(0, 0, holdedElements.length);
             //@ts-ignore
             this.pivot = ev.target;

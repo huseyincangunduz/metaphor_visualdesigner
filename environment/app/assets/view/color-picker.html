@@ -1,0 +1,13 @@
+<div ref="container" class="sv-selector">
+     
+    <div ref="bck" @mousedown="selectorOnMsDown" @mousemove="selectorMsMove" @mouseup="selectorOnMsUp" class="background">
+        
+        <div ref="hueSquare" class="hue"></div>
+        <div class="saturation"></div>
+        <div class="val"></div>
+        <div ref="selector" class="selector"></div>
+    </div>
+    <div class="slider-container"> 
+        <input ref="slider" class="hue-slider" type="range" v-model="colorData.hue" @change="sliderValueChanged" min="0" max="360">
+    </div>
+</div>

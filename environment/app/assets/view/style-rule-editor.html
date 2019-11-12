@@ -1,6 +1,6 @@
 <div>
 
-            <div v-for="{StyleKey, StyleValue, subModifiers} in styleObject">                          
+            <div v-for="{StyleKey, StyleValue, subModifiers} in styleCollection.styleObjects">                          
                 
             <style-changer 
                 :show-expand-sub-modifier-btn="subModifiers != null && subModifiers.length > 0"

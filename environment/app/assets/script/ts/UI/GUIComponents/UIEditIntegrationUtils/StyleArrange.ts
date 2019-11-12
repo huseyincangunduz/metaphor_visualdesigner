@@ -122,7 +122,7 @@ export class StyleObjectCollector {
 
     public styleObjects: Array<StyleObject> = [];
     public keys: Array<string> = [];
-    points = {};
+    points : GenericObject<StyleObject> = {};
     public transferFromStyleDecleration(relatedStyleDecleration: CSSStyleDeclaration) {
         for (let i = 0; i < relatedStyleDecleration.length; i++) {
             const styleKey = relatedStyleDecleration[i],
@@ -136,12 +136,15 @@ export class StyleObjectCollector {
         let key = stl_object.StyleKey;
 
         this.styleObjects.push(stl_object);
+        
         this.keys.push(key);
 
         this.points[key] = stl_object;
     }
     addToArrayAsSubModifier(mainMod: any, key: string, value: string) {
-        this.points[mainMod].subModifiers.push(new StyleObject(key, value));
+        let stlObject = new StyleObject(key, value);
+        this.points[mainMod].subModifiers.push(stlObject);
+        this.points[key] = stlObject;
     }
     public insertKey(relatedStyleDecleration: CSSStyleDeclaration, key: string, value: string) {
         let mainMod = StyleOverrideManager.getMainModifier(key);

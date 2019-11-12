@@ -1,46 +1,34 @@
-export default Vue.component("ghost-text-box", {
-    template: `
-<span class="ghost-text-box">
-
-    <span v-show="!contentEditable" @dblclick="onDoubleClick">
-        <span v-if="!text && !contentEditable" style="opacity: .6"> {{ placeholder }}</span>
-        <span v-show="text">{{ text }}</span>
-    
-    </span>
-    
-    <span ref="textEditSpan" class="text-editing-area" v-if="contentEditable" 
-                contenteditable="true" 
-                @keydown="onKeyDown" @blur="onFocusLost">{{ text }}</span>
-                <span v-if="!text && !contentEditable" style="opacity: .6" @blur="lostFocus"> {{ placeholder }}</span>
-    </span>
-</span>
-
-`,
+import { ViewIndex } from "../../../../Utils.js";
+export default Vue.component("text-box", {
+    template: ViewIndex.getViewSync("text-box"),
     props: {
         initialText: { type: String, default: "Text" },
-        initialPlaceholder: { type: String, default: "" }
+        initialPlaceholder: { type: String, default: "" },
+        initialChangeToPressEnter: { type: Boolean, default: false }
     },
     data: function () {
         return {
             text: this.initialText,
             placeHolder: this.initialPlaceholder,
-            contentEditable: false
+            changeToPressEnter: this.initialChangeToPressEnter
         };
     },
     watch: {
         initialText(newVal) {
             this.text = newVal;
+        },
+        text(newText, oldText) {
+            this.$emit("textchanged", newText, oldText);
         }
         // contentEditable(newVal, oldVal)
         // {
         //     this.setTextBoxMinWidth();
         //     console.info({oldVal, newVal});
         // }
+    }, mounted() {
+        this.setInputWidth();
     },
     methods: {
-        loadtextEditSpan: function (d) {
-            alert(d);
-        },
         //EMITS: OnTextChanged, OnTextChangeCancelled, KeyDown, KeyUp
         //FUNS
         setTextBoxMinWidth() {
@@ -55,26 +43,35 @@ export default Vue.component("ghost-text-box", {
             }
         },
         exitTextEditing() {
-            //console.info("text is changed: " + this.text);
-            this.contentEditable = false;
         },
         setText(newText) {
-            let oldText = this.text;
             this.text = newText;
-            this.$emit("textchanged", newText, oldText);
+            //Artık text değiştiğinde otomatik olark emitleniyor. this.emit burada yok
+            //this.$emit("textchanged", newText, oldText);
         },
         //EVENTS
-        lostFocus() {
+        lostFocus(e) {
+            e.target.value = this.text;
             this.exitTextEditing();
         },
-        onKeyDown: function (e /* : KeyboardEvent*/) {
-            if (e.keyCode == 13) {
-                this.setText(e.target.innerText);
-                this.exitTextEditing();
+        onKeyDown: function (e) {
+            let target;
+            if (e.target instanceof HTMLInputElement) {
+                target = e.target;
+                if (e.keyCode == 13) {
+                    this.setText(target.value);
+                    this.exitTextEditing();
+                }
+                else if (e.keyCode == 27) {
+                    target.value = this.text;
+                    this.exitTextEditing();
+                }
+                this.setInputWidth();
             }
-            else if (e.keyCode == 27) {
-                this.exitTextEditing();
-            }
+        },
+        setInputWidth() {
+            let target = this.$refs.inp;
+            target.size = 1 + (target.value.length > 5 ? target.value.length : 5);
         },
         onDoubleClick: function (e) {
             this.contentEditable = true;

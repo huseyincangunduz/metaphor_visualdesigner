@@ -122,9 +122,22 @@ export class TagsOnAnAttribute {
 export class ViewIndex {
     private static indexes: GenericObject<string> = {};
 
-    
-    public static getViewSync(name: string, defaultValue: string = "") {
+    public static importCSSAsyncIfThereIs(name: string, doc : Document = document)
+    {
+        try{
+            let cssLink  =  doc.createElement("link");
+            cssLink.setAttribute("rel","stylesheet");
+            cssLink.id = "stylesheet-" + name.replace(" ","-").replace("\n","-")
+            cssLink.setAttribute("href","assets/css/component/" + name + ".css");
+            doc.head.appendChild(cssLink);
+        }catch(e)
+        {
+            console.error(e);
+        }
 
+    }
+    public static getViewSync(name: string, defaultValue: string = "", importStyle : boolean = true) {
+        if (importStyle) this.importCSSAsyncIfThereIs(name);
         if (TextControlling.isNotEmpty(ViewIndex.indexes[name])) {
             return ViewIndex.indexes[name];
         }

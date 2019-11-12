@@ -31,27 +31,32 @@ export class AbsoluteAnchorer {
 
 
             }
-            //senaryo 3: Sadece right mı var
+            //senaryo 3: Sadece right varsa 
             else {
-                if (!inlineStlLeft) {
-                    editingElement.style.setProperty("left", computedStyle.left);
-                }
 
-                editingElement.style.setProperty("right", "unset");
-                //editingElement.style.setProperty("right", computedStyle.r)
-
-                commitParams.addProperty("right", computedStyle.right);
-                if (editingElement.style.width)
-
-                    commitParams.addProperty("width", editingElement.style.width);
-                else
-                    commitParams.dontTouch("width");
-                commitParams.addProperty("left", null);
+                AbsoluteAnchorer.applyForOnlyRight(elementRelatedStyle,computedStyle,commitParams,editingElement,inlineStlLeft);
             }
-
         }
+
     }
 
+    public static applyForOnlyRight(elementRelatedStyle: CSSStyleDeclaration, computedStyle: CSSStyleDeclaration, commitParams: CommitParameter, editingElement: HTMLElement, inlineStlLeft : boolean)
+    {
+        if (!inlineStlLeft) editingElement.style.setProperty("left", computedStyle.left);
+            editingElement.style.setProperty("right", "unset");
+        
+        if (TextControlling.isNotEmpty(editingElement.style.width))
+            editingElement.style.setProperty("width", computedStyle.width);
+        
+        commitParams.addProperty("right", computedStyle.right);
+        if (TextControlling.isNotEmpty(editingElement.style.width))
+        {
+            commitParams.addProperty("width", editingElement.style.width);
+        }
+        else {
+            commitParams.dontTouch("width");
+        }
+        commitParams.addProperty("left", null);
 
-
+    }
 }

@@ -97,6 +97,7 @@ export class ElementResizeHandler {
             this.eventHandlers.onResized = callback;
         }
     }
+    updateElementEvent: () => void;
 
 
 
@@ -143,18 +144,29 @@ export class ElementResizeHandler {
         this.editorDocument.addEventListener("mouseup", this.resizerdots_msup);
         //this.editorDocument.addEventListener("mouseleave", this.resizerdots_msup);
         this.designerIframeDocument.addEventListener("mouseup", this.resizerdots_msup);
+        this.updateElementEvent = () => {
+            this.updateDots();
+        }
+        this.designerIframe.addEventListener("resize", () => { this.updateElementEvent });
+        // this.designerIframeDocument.body.addEventListener
+        
     }
 
 
     public select(pivot: HTMLElement, onlyEmphasize:boolean = false) {
         if (pivot != null) {
             this.pivot = pivot;
+   
+            this.pivot.addEventListener("resize", this.updateElementEvent);
+            this.pivot.addEventListener("change", this.updateElementEvent);
             this.updateDots();
             this.onlyEmphasizeDots = onlyEmphasize;
         }
         else {
             this.hideDots();
             this.onlyEmphasizeDots = false;
+            this.pivot.removeEventListener("resize",this.updateElementEvent);
+            this.pivot.removeEventListener("change",this.updateElementEvent);
         }
     }
 

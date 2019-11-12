@@ -1,5 +1,4 @@
 declare type VueComponent = any;
-
 /**
  * Jenerik obje türü, sadece tek tipte veri tutan esnek objeleri tanımlamak için kullanılır
  * @template T saklanacak veri türüdür

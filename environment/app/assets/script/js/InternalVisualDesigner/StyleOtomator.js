@@ -99,48 +99,6 @@ export class StyleOtomator {
         //Sağa sola yaslanma olayına karar ver
         AbsoluteAnchorer.modify(elementRelatedStyle.style, computedStyle, commitParam, editingElement);
         return;
-        //@ts-ignore
-        if (elementRelatedStyle.style.position == "absolute" || elementRelatedStyle.style.position == "fixed") {
-            // document.scrol
-            if (TextControlling.isNotEmpty(elementRelatedStyle.style.right)) {
-                let thereWasInlineStlLeftAtStart = TextControlling.isNotEmpty(editingElement.style.left);
-                //editingElement.style.setProperty("right", computedStyle.right);
-                if (TextControlling.isNotEmpty(elementRelatedStyle.style.left)) {
-                    if (!commitParam.styleValues["width"])
-                        editingElement.style.setProperty("right", computedStyle.right);
-                    else
-                        editingElement.style.setProperty("right", "unset");
-                }
-                else if (thereWasInlineStlLeftAtStart) {
-                    elementRelatedStyle.style.setProperty("right", "unset", elementRelatedStyle.style.getPropertyPriority("right"));
-                }
-                if (!thereWasInlineStlLeftAtStart) {
-                    editingElement.style.setProperty("left", computedStyle.left);
-                }
-                editingElement.style.setProperty("width", computedStyle.width);
-                // if (TextControlling.isEmpty(editingElement.style.width)) {
-                //     editingElement.style.setProperty("width", computedStyle.width);
-                // }
-                //Commiting
-                if (TextControlling.isEmpty(elementRelatedStyle.style.left)) {
-                    commitParam.addProperty("left", null);
-                    if (elementRelatedStyle.style.width) {
-                        commitParam.addProperty("width", computedStyle.width);
-                    }
-                    else if (!commitParam.styleValues["width"]) {
-                        commitParam.addProperty("width", null);
-                    }
-                }
-                else {
-                    commitParam.addProperty("left", computedStyle.left);
-                    commitParam.addProperty("width", null);
-                }
-                commitParam.addProperty("right", computedStyle.right);
-                /*if (isEmpty(elementRelatedStyle.style.left)) {
-                    commitParam.addProperty("left", null);
-                }*/
-            }
-        }
     }
     findRule(editingElement, enabledMediaRule, ruleState) {
         let rulelist;

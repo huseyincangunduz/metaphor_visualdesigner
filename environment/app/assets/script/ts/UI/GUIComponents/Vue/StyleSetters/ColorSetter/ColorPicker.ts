@@ -1,23 +1,8 @@
 import { ColorConversionHelper } from "./ColorConversions.js";
-import { Range } from "../../../../../Utils.js";
+import { Range, ViewIndex } from "../../../../../Utils.js";
 export let ColorPicker : VueComponent = Vue.component("color-picker",
     {
-        template: `
-    
-    <div ref="container" class="sv-selector">
-     
-        <div ref="bck" @mousedown="selectorOnMsDown" @mousemove="selectorMsMove" @mouseup="selectorOnMsUp" class="background">
-            
-            <div ref="hueSquare" class="hue"></div>
-            <div class="saturation"></div>
-            <div class="val"></div>
-            <div ref="selector" class="selector"></div>
-        </div>
-        <div class="slider-container"> 
-            <input ref="slider" class="hue-slider" type="range" v-model="colorData.hue" @change="sliderValueChanged" min="0" max="360">
-        </div>
-    </div>
-    `,
+        template:ViewIndex.getViewSync("color-picker"),
         data: function () {
             return {
                 colorData: {
@@ -25,9 +10,13 @@ export let ColorPicker : VueComponent = Vue.component("color-picker",
                     saturation: 100,
                     value: 100
                 },
+                colorReadyData: {
+                    hsl: null
+                },
                 selectorData: {
                     hold: false
-                }
+                },
+
             }
         },
         computed: {
@@ -42,16 +31,17 @@ export let ColorPicker : VueComponent = Vue.component("color-picker",
                 hue_bar.style.setProperty("background-color", `hsl(${hueInt},100%,50%)`);
                 this.colorChange(hueInt, this.colorData.saturation, this.colorData.value)
             },
-            colorChange(h, s, v) {
-                this.colorData.hue = h;
+            colorChange(h: number , s : number ,  v : number)  {
+                this.colorData.hue  = h;
                 this.colorData.saturation = s;
                 this.colorData.value = v;
                 let hsvPercent = { h, s, v }
                 let hsv = { h, s: s / 100, v: v / 100 };
 
                 //to HSL float Conversion
-                let hsl = ColorConversionHelper.hsv2hsl(hsv);
-                this.$emit("color-selected", {hsv, hsl})
+                let hsl = ColorConversionHelper.hsv2hsl(hsv,this.colorReadyData.hsl );
+                this.colorReadyData.hsl = hsl;
+                this.$emit("color-selected", {hsv, hsl});
                 //document.body.style.setProperty("background-color", `hsl(${hsl.h},${hsl.s * 100 + "%"},${hsl.l * 100 + "%"})`)
                 //hsl.s = SL.l && SL.l < 1 ? SB.s * SB.b / (SL.l < 0.5 ? SL.l * 2 : (2 - SL.l)*2) : SL.s;
             },

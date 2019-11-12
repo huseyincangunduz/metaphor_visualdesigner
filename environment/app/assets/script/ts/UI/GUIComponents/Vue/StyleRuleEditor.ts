@@ -13,17 +13,17 @@ export default Vue.component("style-rule-editor", {
             editingPivotElement: null,
             //@ts-ignore
             styleRule: null,
-            //@ts-ignore
-            styleObject: null,
-            elementSelectorText: "*",
-            showingSubModifiers: []
 
+            elementSelectorText: "*",
+            showingSubModifiers: [],
+            styleCollection: new StyleObjectCollector()
         }
     },
     watch: {
         styleRule() {
             console.info("styleRule değişti")
-            if (!this.subModifier) this.styleObject = this.StyleObject(this.styleRule);
+            if (!this.subModifier) 
+                this.refreshStyles();
         }
     },
     methods: {
@@ -49,14 +49,17 @@ export default Vue.component("style-rule-editor", {
         },
         styleIsRemoved(data) {
             Vue.set(this.styleRule, data.styleKey, null);
-            this.updateStyles();
+            this.refreshStyles();
             console.info("stylescomponent stil kaldırma");
         },
-        styleIsChanged(data) {
+        styleIsChanged(data : { styleKey, styleVal,component }) {
             console.info({ type: "styleIsChanged", data });
             this.styleRule.setProperty(data.styleKey, data.styleVal);
             //Vue.set(this.styleRule, data.styleKey, data.styleVal);
-            this.updateStyles();
+            var styleCollection : StyleObjectCollector = this.styleCollection;
+            styleCollection.points[data.styleKey].StyleValue = data.styleVal
+            //this.styleCollection.
+            //this.refreshStyles();
             data.component.styleVal = data.styleVal
         },
         styleIsAdded(data) {
@@ -70,21 +73,22 @@ export default Vue.component("style-rule-editor", {
             console.info({ type: "styleIsAdded", data });
             this.styleRule.setProperty(data.styleKey, styleVal);
             //Vue.set(this.styleRule, data.styleKey, data.styleVal);
-            this.updateStyles();
+            this.refreshStyles();
             data.component.styleVal = data.styleVal
         },
-        StyleObject(stl) {
-
-            let styleCollection = new StyleObjectCollector();
-            styleCollection.transferFromStyleDecleration(stl);
-            return styleCollection.styleObjects;
-        }, updateStyles() {
-            this.styleObject = this.StyleObject(this.styleRule);
+        refreshStyles() {
+            this.StyleObject(this.styleRule);
 
         },
         updateSelectedElementInfo() {
-            this.updateStyles();
-        }
+            this.refreshStyles();
+        },
+        StyleObject(stl) {
+
+            this.styleCollection = new StyleObjectCollector();
+            this.styleCollection.transferFromStyleDecleration(stl);
+            //return this.styleCollection.styleObjects;
+        }, 
 
     }
 

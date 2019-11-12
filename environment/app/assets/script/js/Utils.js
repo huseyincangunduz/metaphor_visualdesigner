@@ -100,7 +100,21 @@ export class TagsOnAnAttribute {
     }
 }
 export class ViewIndex {
-    static getViewSync(name, defaultValue = "") {
+    static importCSSAsyncIfThereIs(name, doc = document) {
+        try {
+            let cssLink = doc.createElement("link");
+            cssLink.setAttribute("rel", "stylesheet");
+            cssLink.id = "stylesheet-" + name.replace(" ", "-").replace("\n", "-");
+            cssLink.setAttribute("href", "assets/css/component/" + name + ".css");
+            doc.head.appendChild(cssLink);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+    static getViewSync(name, defaultValue = "", importStyle = true) {
+        if (importStyle)
+            this.importCSSAsyncIfThereIs(name);
         if (TextControlling.isNotEmpty(ViewIndex.indexes[name])) {
             return ViewIndex.indexes[name];
         }

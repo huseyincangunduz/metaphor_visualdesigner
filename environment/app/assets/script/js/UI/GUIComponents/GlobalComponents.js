@@ -1,5 +1,5 @@
 //Primitive Components
-import "./Vue/Primitives/GhostTextBox.js";
+import "./Vue/Primitives/TextBox.js";
 import "./Vue/Primitives/TabControl.js";
 //ElementSetters
 import "./Vue/StyleSetters/FontWeightSetter.js";

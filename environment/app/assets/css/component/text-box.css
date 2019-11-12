@@ -1,0 +1,13 @@
+input.text-box{
+    
+    display: inline;
+    background: inherit;
+    color: inherit;
+    border: 1px solid transparent;
+    padding: 1px;
+}
+input.text-box:hover
+{
+    border-color: rgba(255, 255, 255, 50);
+    border-radius: 1px;
+}

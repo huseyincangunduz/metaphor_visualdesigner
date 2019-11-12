@@ -120,7 +120,9 @@ export class StyleObjectCollector {
         this.points[key] = stl_object;
     }
     addToArrayAsSubModifier(mainMod, key, value) {
-        this.points[mainMod].subModifiers.push(new StyleObject(key, value));
+        let stlObject = new StyleObject(key, value);
+        this.points[mainMod].subModifiers.push(stlObject);
+        this.points[key] = stlObject;
     }
     insertKey(relatedStyleDecleration, key, value) {
         let mainMod = StyleOverrideManager.getMainModifier(key);
