@@ -1,5 +1,5 @@
 export enum ResultMode {
-    Success, Fail, Unknown
+    Fail, Success,  Unknown = -1
 }
 
 export class UnitTestResult {
@@ -36,21 +36,27 @@ export class UnitTester {
             if (initEnvironment == null)
                 console.error("Teste devam edebilmek için Init fonksiyonu ya da Init ile oluşan çevreden biri tanımlanmalıdır.");
         if (initEnvironment) {
-            let startt = new Date();
-
+            let startt = 0;
+            let endt = 0;
+            
             try {
+                startt = (new Date()).getMilliseconds();
                 runResult = run.bind(initEnvironment)();
+                endt = (new Date()).getMilliseconds();
                 testResult.runResult = runResult;
+                
             }
             catch (ex) {
+                endt = (new Date()).getMilliseconds();
                 testResult.resultedBy = ResultMode.Fail;
                 testResult.exceptionMessage = ex.message;
+                
             }
 
            
-            let endt = new Date();
+            
 
-            let elapsed = endt.getMilliseconds() - startt.getMilliseconds();
+            let elapsed = endt - startt;
 
             testResult.resultTimeMS = elapsed;
             testResult.resultedBy = assertion(runResult, expectedResult) ? ResultMode.Success : ResultMode.Fail;

@@ -4,6 +4,7 @@
   "main": "main.js",
   "dependencies": {
     "@types/jquery": "^3.3.29",
+    "@types/node": "^12.12.11",
     "debug": "^4.1.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",

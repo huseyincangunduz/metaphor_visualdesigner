@@ -6,10 +6,13 @@ export default Vue.component("element-editor", {
             editingPivotElement: null,
             //Besleme verileri
             styleRule: null,
+            internalVisualDesigner: null,
+            pageCore: null
         };
     },
     computed: {
         elementSelectorText() {
+            var internalVisualDesigner = this.internalVisualDesigner;
             let el = this.editingPivotElement;
             return el ? el.tagName + "#" + el.id : "Not selected!";
         }
@@ -20,6 +23,7 @@ export default Vue.component("element-editor", {
         },
         editingPivotElement() {
             this.$refs.styleEditor.editingPivotElement = this.editingPivotElement;
+            this.$refs.elementIDChanger.selectedElement = this.editingPivotElement;
         }
     },
     methods: {
@@ -31,6 +35,11 @@ export default Vue.component("element-editor", {
                 this.editingPivotElement = data.editingPivotElement;
             this.styleRule = data["styleRule"];
             return;
+        },
+        setInternalVisualDesigner(ivd) {
+            this.internalVisualDesigner = ivd;
+            this.pageCore = ivd.pageCore;
+            this.$refs.elementIDChanger.internalVisualDesigner = ivd;
         }
     }
 });

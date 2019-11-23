@@ -1,8 +1,8 @@
 export var ResultMode;
 (function (ResultMode) {
-    ResultMode[ResultMode["Success"] = 0] = "Success";
-    ResultMode[ResultMode["Fail"] = 1] = "Fail";
-    ResultMode[ResultMode["Unknown"] = 2] = "Unknown";
+    ResultMode[ResultMode["Fail"] = 0] = "Fail";
+    ResultMode[ResultMode["Success"] = 1] = "Success";
+    ResultMode[ResultMode["Unknown"] = -1] = "Unknown";
 })(ResultMode || (ResultMode = {}));
 export class UnitTestResult {
     constructor() {
@@ -22,17 +22,20 @@ export class UnitTester {
         else if (initEnvironment == null)
             console.error("Teste devam edebilmek için Init fonksiyonu ya da Init ile oluşan çevreden biri tanımlanmalıdır.");
         if (initEnvironment) {
-            let startt = new Date();
+            let startt = 0;
+            let endt = 0;
             try {
+                startt = (new Date()).getMilliseconds();
                 runResult = run.bind(initEnvironment)();
+                endt = (new Date()).getMilliseconds();
                 testResult.runResult = runResult;
             }
             catch (ex) {
+                endt = (new Date()).getMilliseconds();
                 testResult.resultedBy = ResultMode.Fail;
                 testResult.exceptionMessage = ex.message;
             }
-            let endt = new Date();
-            let elapsed = endt.getMilliseconds() - startt.getMilliseconds();
+            let elapsed = endt - startt;
             testResult.resultTimeMS = elapsed;
             testResult.resultedBy = assertion(runResult, expectedResult) ? ResultMode.Success : ResultMode.Fail;
             testResult.expectedResult = expectedResult;

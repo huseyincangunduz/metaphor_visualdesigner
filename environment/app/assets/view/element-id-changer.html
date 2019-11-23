@@ -1,0 +1,6 @@
+<div v-show="selectedElement != null">
+    ID: <text-box ref="IDtxtBox" :initialChangeByPressEnter="true" 
+    :initialText="elementID" 
+    @user-textchanged="IDtxtBox_onUserTextChanged" 
+    @textchanged="IDtxtBox_onTextChanged"></text-box>
+</div>

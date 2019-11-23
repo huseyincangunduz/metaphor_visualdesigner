@@ -1,5 +1,7 @@
-import { TextControlling } from "../Utils.js";
+import { TextControlling } from "../../Utils.js";
 import { AbsoluteAnchorer } from "./AbsoluteAnchorer.js";
+import { StylesheetRuleOperations, StyleRuleState } from "./StylesheetRuleOperations.js";
+
 /** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
 export class CommitParameter {
     public styleKeys: string[];
@@ -9,6 +11,7 @@ export class CommitParameter {
         this.styleKeys = [];
         this.styleValues = [];
         this.removeKeys = [];
+        
     }
     public addProperty(key: string, val: string, priority: string = "") {
         if (TextControlling.isNotEmpty(val)) {
@@ -45,22 +48,21 @@ export class CommitParameter {
         this.removeFromWillBeRemovedArray(key);
     }
 }
-export enum StyleRuleState {
-    normal, active, hover
-}
+
 
 
 export class StyleOtomator {
     editingStyleSheet: CSSStyleSheet;
     editingIframeDocument: Document;
     editingIframeWindow: Window;
+stylesheetRuleOperations : StylesheetRuleOperations;
 
 
-
-    constructor(editingIframeWindow_: Window, editingStyleSheet_: CSSStyleSheet) {
+    constructor(editingIframeWindow_: Window, editingStyleSheet_: CSSStyleSheet,ops : StylesheetRuleOperations) {
         this.editingStyleSheet = editingStyleSheet_;
         this.editingIframeDocument = editingIframeWindow_.document;
         this.editingIframeWindow = editingIframeWindow_;
+        this.stylesheetRuleOperations = ops;
     }
 
 
@@ -128,9 +130,9 @@ export class StyleOtomator {
 
     }
 
-
+    //TODO: findRule gibi şeyleri pageCore'a taşı
     findRule(editingElement: HTMLElement, enabledMediaRule: CSSMediaRule, ruleState: StyleRuleState) {
-        let rulelist: CSSRuleList;
+
 
         //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te
         //ne kadar kendi taginde element varsa sonundaki sayı okadar olur
@@ -148,74 +150,12 @@ export class StyleOtomator {
 
         }
 
+        return this.stylesheetRuleOperations.getRelatedStyleRule(this.editingStyleSheet,this.editingIframeWindow,editingElement,enabledMediaRule,ruleState)
 
 
-        let id_selector: string = `#${editingElement.id}`,
-            selector: Array<string>;
-        rulelist = (enabledMediaRule != null) ? enabledMediaRule.cssRules : this.editingStyleSheet.cssRules;
-        selector = this.getRequiredSelectorsArray(id_selector, ruleState);
-        let determinedRule: CSSStyleRule | CSSRule;
+         
+    }
 
-
-        for (let i = 0; i < rulelist.length; i++) {
-            const currentRule = rulelist.item(i);
-            // if (determinedRule != null) break;
-            let currentStyleRule: CSSStyleRule;
-            if (currentRule instanceof this.editingIframeWindow["CSSStyleRule"]) {
-                //@ts-ignore
-                currentStyleRule = currentRule;
-                if (this.isSuitableStyleRule(currentStyleRule.selectorText, selector)) determinedRule = currentStyleRule;
-            }
-        }
-        if (determinedRule == null) //Eğer öyle bir şey yoksa yeni ekle
-        {
-            determinedRule = this.insertNewRule(selector, enabledMediaRule, this.editingStyleSheet);
-        }
-        return determinedRule;
-    }
-    insertNewRule(selector: string[], enabledMediaRule: CSSMediaRule, editingStyleSheet: CSSStyleSheet): CSSStyleRule {
-        var determinedRule;
-        let cssRuleText = selector.join(", ") + " { }";
-        if (enabledMediaRule != null) {
-            let ni = enabledMediaRule.insertRule(cssRuleText, enabledMediaRule.cssRules.length);
-            determinedRule = enabledMediaRule.cssRules.item(ni);
-        }
-        else (this.editingStyleSheet != null)
-        {
-            let ni = this.editingStyleSheet.insertRule(cssRuleText, editingStyleSheet.cssRules.length);
-            determinedRule = this.editingStyleSheet.cssRules.item(ni);
-        }
-        return determinedRule;
-    }
-    isSuitableStyleRule(selectorText: string, selector: string[]): boolean {
-        let determine: boolean;
-        if (selector.length == 1) {
-            var str = selector[0];
-            determine = (selectorText == `${str}`);
-        }
-        else {
-            selector.forEach(str => {
-                determine = ((
-                    selectorText.indexOf(`${str},`) > -1 || selectorText.indexOf(`, ${str}`) > -1
-                ));
-            });
-        }
-        return determine;
-    }
-    getRequiredSelectorsArray(id_selector: string, ruleState: StyleRuleState): string[] {
-        let selector: string[];
-        switch (ruleState) {
-            case StyleRuleState.active:
-                selector = [`${id_selector}:active`, `${id_selector}[metaphor-internal-design-state="active"]`];
-                break;
-            case StyleRuleState.hover:
-                selector = [`${id_selector}:hover`, `${id_selector}[metaphor-internal-design-state="hover"]`];
-                break;
-            default:
-                selector = [`${id_selector}`];
-        }
-        return selector;
-    }
     //#endregion
 
 }

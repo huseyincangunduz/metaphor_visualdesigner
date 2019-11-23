@@ -1,8 +1,9 @@
 import { UnitTester } from "./AncientCreature/TestCore.js";
 import { ColorConversionHelper } from "../UI/GUIComponents/Vue/StyleSetters/ColorSetter/ColorConversions.js";
-var testFunction = window["testFunction"] =
+import { TextControlling } from "../Utils.js";
+let allTests = [
     function () {
-        let testResult = UnitTester.test("HSV(204°, 86%, 27%)'yı hsl dönüşümü 204°, 75%, 15% olmalı", { h: 204, s: 0.75, l: 0.15 }, function init() {
+        return UnitTester.test("HSV(204°, 86%, 27%)'yı hsl dönüşümü 204°, 75%, 15% olmalı", { h: 204, s: 0.75, l: 0.15 }, function init() {
             let inputColorObj = { h: 204, s: 0.86, v: 0.27 };
             return { inputColorObj };
         }, function run() {
@@ -10,5 +11,29 @@ var testFunction = window["testFunction"] =
         }, function assert(outputColor, excepted) {
             return outputColor.h == 204 && outputColor.s == 0.75 && outputColor.l == 0.15;
         }, null);
-        return testResult;
-    };
+    },
+    function () {
+        let str = "mehmet";
+        return UnitTester.test("'Mehmet' stringinin dolu dönmesi gerek", true, function init() {
+            return {};
+        }, function run() {
+            return TextControlling.isNotEmpty(str);
+        }, function assert(out, expected) {
+            return out == expected;
+        }, null);
+    },
+    function () {
+        let str = "";
+        return UnitTester.test("boş stringinin boş  dönmesi gerek", true, function init() {
+            return {};
+        }, function run() {
+            return TextControlling.isEmpty(str);
+        }, function assert(out, expected) {
+            return out == expected;
+        }, null);
+    },
+];
+let testAll = function () {
+    return allTests.map((f) => { return f(); });
+};
+window["testAll"] = testAll;

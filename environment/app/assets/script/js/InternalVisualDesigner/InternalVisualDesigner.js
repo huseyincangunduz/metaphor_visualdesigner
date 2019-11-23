@@ -1,6 +1,7 @@
 import { ElementSelectionAndMovementManager } from './ElementSelectionAndMovementManager.js';
-import { StyleOtomator, StyleRuleState } from "./StyleOtomator.js";
 import { ElementTextEditHandler } from "./ElementTextEditHandler.js";
+import { PageCore } from './PageCore/PageCore.js';
+import { StyleRuleState } from './PageCore/StylesheetRuleOperations.js';
 const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 export class InternalVisualDesigner {
     constructor(bckgDivisionElement, iframeElement, frgDivisionElement) {
@@ -8,10 +9,10 @@ export class InternalVisualDesigner {
         this.initialized = false;
         /** Yeniden boyutlandığında */
         this.onResized = (element, pivot) => {
-            console.info("resized: ");
-            console.info(pivot);
+            //console.info("resized: ");
+            //console.info(pivot);
             //Resize'dan sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir 
-            this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
+            this.pageCore.commitStyleElement(pivot, StyleRuleState.normal);
             //onResized olarak emit edilir (üst sınıflar tarafından ayarlanan onResized eventi çalıştırılır)
             this.eventHandlers.onResized(element, pivot);
         };
@@ -20,7 +21,7 @@ export class InternalVisualDesigner {
             console.info("moved: ");
             console.info(pivot);
             //Haraket ettirmeden sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir
-            this.styleOtomation.commitStyleElement(pivot, StyleRuleState.normal);
+            this.pageCore.commitStyleElement(pivot, StyleRuleState.normal);
             // if (pivot.id == "mabel") {
             //     this.styleOtomation.commitStyleElement(pivot, StyleRuleState.hover);
             // }
@@ -87,24 +88,10 @@ export class InternalVisualDesigner {
         this.textEditingHandler = new ElementTextEditHandler(iframeElement);
         this.textEditingHandler.eventHandlerSetter.setOnEnteredTextChangeMode(this.onEnteredTextChangeMode);
         this.textEditingHandler.eventHandlerSetter.setOnExitedTextChangeMode(this.onExitedTextChangeMode);
-        this.mainEditingStyleSheet = this.getMainEditingStyleSheet();
-        this.styleOtomation = new StyleOtomator(this.editingIframeWindow, this.mainEditingStyleSheet);
+        this.pageCore = new PageCore(this);
+        //this.mainEditingStyleSheet = this.getMainEditingStyleSheet();
+        //this.styleOtomation = new StyleOtomator(this.editingIframeWindow, this.mainEditingStyleSheet);
         this.initialized = true;
-    }
-    getMainEditingStyleSheet() {
-        let stlsheets = this.editingIframeDocument.styleSheets;
-        for (let i = 0; i < stlsheets.length; i++) {
-            let stylesheet = stlsheets.item(i);
-            //@ts-ignore FIXME: iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
-            if (stylesheet instanceof this.editingIframeWindow.CSSStyleSheet && stylesheet.ownerNode["id"] == EDITING_STYLESHEET_ID) {
-                //@ts-ignore FIXME: iframe sınıflarına normal instanceof verdiğim zaman exception çıkıyordu. tek çarem window'tan sınıflara erişmek
-                return stylesheet;
-            }
-        }
-        //TODO: Add inserting stylesheet and save code
-        throw new Error(`id='${EDITING_STYLESHEET_ID}' tagged sheet is not found`);
-    }
-    refreshElementEditEvents() {
     }
     static createByDivAndCreate(containerElement, internalDesignerComponent = null, secondarySrc = "about:blank") {
         let setPositionAbs = (el) => {

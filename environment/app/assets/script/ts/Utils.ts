@@ -9,6 +9,22 @@ export class TextControlling {
     }
 }
 
+export const lettersUpper = "ABCDEFGHIJKLMNOPQRSTUVWYXZ";
+export const lettersLower = "abcdefghijklmnopqrstuvwyxz";
+export const letters = lettersLower + lettersUpper;
+export const cssSelectorPunctation = "#. []{}"
+export class TextUtils{
+    
+    public static charEqualAllOfOne(str : string, control : string | string[])
+    {
+        for (let i = 0; i < control.length; i++) {
+            const char = control[i];
+            if (str == char) return true
+        }
+        return false;
+    }
+
+}
 
 export class Range {
     public min: number;

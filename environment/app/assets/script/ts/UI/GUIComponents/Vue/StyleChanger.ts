@@ -86,7 +86,7 @@ export default Vue.component("style-changer",
             },
             valueKeyDown(e /*: KeyboardEvent*/) {
                 if (e.keyCode == 13) /*enter*/ {
-
+                
                     this.$emit("style-changed", {
                         styleKey: this.styleKey,
                         styleOldVal: this.styleValue,

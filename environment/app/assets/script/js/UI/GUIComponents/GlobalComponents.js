@@ -9,6 +9,7 @@ import "./Vue/StyleSetters/ColorSetter.js";
 import "./Vue/StyleRuleEditor.js";
 import "./Vue/StyleAdder.js";
 import "./Vue/StyleChanger.js";
-import "./Vue/InternalVisualDesigner.js";
+import "./Vue/InternalVisualDesignerView.js";
 import "./Vue/VisualDesignerEnvironment.js";
+import "./Vue/ElementEditor/ElementIDChanger.js";
 import "./Vue/ElementEditor.js";

@@ -9,7 +9,7 @@
             <div ref="uiContentAreaContainer" class="internal-designer-area">
 
                 <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected"
-                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" />
+                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" @ivd-created="registerInternalVisualDesigner" />
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
 

@@ -5,22 +5,25 @@ export default Vue.component("text-box", {
     props: {
         initialText: { type: String, default: "Text" },
         initialPlaceholder: { type: String, default: "" },
-        initialChangeToPressEnter: { type: Boolean, default: false }
+        initialChangeByPressEnter: { type: Boolean, default: false }
     },
     data: function () {
         return {
             text: this.initialText,
             placeHolder: this.initialPlaceholder,
-            changeToPressEnter: this.initialChangeToPressEnter
+            changeByPressEnter: this.initialChangeByPressEnter
+            
         }
     },
     watch:
     {
         initialText(newVal) {
             this.text = newVal;
+            this.dipper
         },
         text(newText: string, oldText: string) {
             this.$emit("textchanged", newText, oldText);
+            this.setInputWidth();
         }
         // contentEditable(newVal, oldVal)
         // {
@@ -51,9 +54,7 @@ export default Vue.component("text-box", {
                 }
             }
         },
-        exitTextEditing() {
 
-        },
         setText(newText) {
 
 
@@ -64,7 +65,7 @@ export default Vue.component("text-box", {
         //EVENTS
         lostFocus(e) {
             e.target.value = this.text;
-            this.exitTextEditing();
+            // this.exitTextEditing();
         }
         ,
 
@@ -72,17 +73,24 @@ export default Vue.component("text-box", {
             let target: HTMLInputElement;
             if (e.target instanceof HTMLInputElement) {
                 target = e.target;
-                if (e.keyCode == 13) {
-
-                    this.setText(target.value);
-                    this.exitTextEditing();
+                let oldText =  this.text;
+                if (this.changeByPressEnter)
+                {
+                    if (e.keyCode == 13) {
+              
+                        this.setText(target.value);
+                        this.$emit("user-textchanged",this.text,oldText);
+                    }
+                    else if (e.keyCode == 27) {
+                        target.value = this.text;
+                     
+                    }
                 }
-                else if (e.keyCode == 27) {
-                    target.value = this.text;
-                    this.exitTextEditing();
-
+                else {
+                    this.$emit("user-textchanged",this.text,oldText);
+                    this.setInputWidth();
                 }
-                this.setInputWidth();
+      
                 
             }
 
@@ -100,7 +108,7 @@ export default Vue.component("text-box", {
             e.preventDefault();
         },
         onFocusLost(e) {
-            this.exitTextEditing();
+            // this.exitTextEditing();
         }
     }
 });

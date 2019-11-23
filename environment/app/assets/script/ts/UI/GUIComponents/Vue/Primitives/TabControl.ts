@@ -2,9 +2,10 @@ import { ViewIndex } from "../../../../Utils.js";
 
 Vue.component('tab-control', {
     template: ViewIndex.getViewSync("tab-control"),
-    
+
     data() {
         return {    tabs: this.$children ? this.$children  : [] };
+       
     },
     
     created() {
@@ -18,11 +19,14 @@ Vue.component('tab-control', {
                 tab.isActive = (tab.name == selectedTab.name);
             });
         }
+        
     }
-});
+}
+
+);
 
 Vue.component('tab-page', {
-    
+
     template: `
 
         <div v-show="isActive">
@@ -49,6 +53,6 @@ Vue.component('tab-page', {
     mounted() {
         
         this.isActive = this.selected;
-        
+  
     }
 });

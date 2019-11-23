@@ -1,5 +1,6 @@
-import InternalVisualDesignerComponent from "./InternalVisualDesigner.js";
+import InternalVisualDesignerComponent from "./InternalVisualDesignerView.js";
 import { ViewIndex } from "../../../Utils.js";
+import { InternalVisualDesigner } from "../../../InternalVisualDesigner/InternalVisualDesigner.js";
 export default Vue.component("visual-designer", {
     template:
        ViewIndex.getViewSync("visual-designer-environment"),
@@ -37,6 +38,13 @@ export default Vue.component("visual-designer", {
         onElementUpdated() {
 
             this.$refs.elementEditor.refreshStyleRule();
+        },
+        registerInternalVisualDesigner(ivd : InternalVisualDesigner)
+        {
+            this.InternalVisualDesigner = ivd;
+            this.$refs.elementEditor.setInternalVisualDesigner(ivd);
         }
+        
     }
 });
+

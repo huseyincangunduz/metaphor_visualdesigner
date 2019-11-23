@@ -100,6 +100,7 @@ export class StyleOtomator {
         AbsoluteAnchorer.modify(elementRelatedStyle.style, computedStyle, commitParam, editingElement);
         return;
     }
+    //TODO: findRule gibi şeyleri pageCore'a taşı
     findRule(editingElement, enabledMediaRule, ruleState) {
         let rulelist;
         //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te

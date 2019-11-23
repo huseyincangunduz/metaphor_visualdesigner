@@ -1,8 +1,8 @@
 
-<input  ref="inp"  v-if="changeToPressEnter" 
+<input  ref="inp"  v-if="changeByPressEnter" 
     :value="text" 
     class="text-box"
      type="text" :placeholder="placeHolder"  minlength="1" name="edit" @keydown="onKeyDown" @blur="lostFocus">
 <!-- Her metin değiştiğinde text özelliği de  değişecek -->
 <input v-else class="text-box"  type="text" v-model="text" :placeholder="placeHolder" 
-minsize="1" name="edit" >
+minsize="1" name="edit"  ref="inp"  @keydown="onKeyDown" @blur="lostFocus">

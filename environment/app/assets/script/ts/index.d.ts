@@ -75,3 +75,4 @@ declare class Vue
 //     public static component(tagname : string, dataDecleration : {}) : VueComponent;
 //     public static set(object : Array<any> | Object,key:string,value:string);
 // }
+
