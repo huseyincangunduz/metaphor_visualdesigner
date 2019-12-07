@@ -1,0 +1,15 @@
+.list-box ul {
+    list-style-type: none;
+    user-select: none;
+    cursor: pointer;
+    padding-left: 0px;
+}
+
+.list-box ul li {
+    padding: 1px;
+}
+
+.list-box ul li:hover {
+    border: 1px solid white;
+    padding: none;
+}

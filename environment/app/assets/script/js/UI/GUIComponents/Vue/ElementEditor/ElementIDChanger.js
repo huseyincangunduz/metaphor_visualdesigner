@@ -25,6 +25,7 @@ export let ElementIDChanger = Vue.component("element-id-changer", {
             var pageCore = this.pageCore;
             let k = pageCore.setIDRequest(this.selectedElement, txt);
             alert(k.message);
+            this.$emit("refresh");
             //alert(`Change ID Request:  ${old} to ${txt}`);
         }
     }

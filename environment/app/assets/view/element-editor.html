@@ -3,7 +3,10 @@
         <tab-control>
             <tab-page name="Overview" :is-selected="true">
                 Overview
-                <element-id-changer ref="elementIDChanger"></element-id-changer>
+                <element-id-changer ref="elementIDChanger" @refresh="refresh">
+                    
+                </element-id-changer>
+            
             </tab-page>
             <tab-page name="Styles" :is-selected="true">
                 <!-- TODO: Durumları unutma koçm -->

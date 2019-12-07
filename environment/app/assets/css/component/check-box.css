@@ -1,0 +1,22 @@
+.check-box.box-area {
+    display: inline-block;
+    border: 10px solid white;
+    height: 24px;
+    width: 24px;
+}
+
+.check-box.box-area.checked {
+    border: none;
+}
+
+.check-box.box-area .check {
+    height: 24px;
+    width: 24px;
+    visibility: hidden;
+}
+
+.check-box.box-area.checked .check {
+visibility: visible;
+}
+
+

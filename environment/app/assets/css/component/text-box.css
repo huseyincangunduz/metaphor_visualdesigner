@@ -8,6 +8,7 @@ input.text-box{
 }
 input.text-box:hover
 {
-    border-color: rgba(255, 255, 255, 50);
-    border-radius: 1px;
+    border-color: rgba(255, 255, 255, 25);
+
+    border-radius: 2px;
 }

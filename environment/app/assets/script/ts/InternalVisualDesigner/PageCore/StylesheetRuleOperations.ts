@@ -1,8 +1,11 @@
+import { TextControlling } from "../../Utils";
+
 export enum StyleRuleState {
     normal, active, hover
 }
 
 export class StylesheetRuleOperations {
+    iframeWindow: Window;
     getRelatedStyleRule(editingStyleSheet: CSSStyleSheet,editingIframeWindow : Window, editingElement: HTMLElement, enabledMediaRule: CSSMediaRule, ruleState: StyleRuleState) {
         let rulelist: CSSRuleList;
         let id_selector: string = `#${editingElement.id}`,
@@ -29,8 +32,8 @@ export class StylesheetRuleOperations {
 
         return determinedRule;
     }
-    constructor(public iframeWindow) {
-
+    constructor( iframeWindow : Window) {
+        this.iframeWindow = iframeWindow;
     }
     getRuleIndexFromStylesheet(rule: CSSStyleRule, parent: CSSStyleSheet): number {
         for (let index = 0; index < parent.cssRules.length; index++) {
@@ -43,7 +46,7 @@ export class StylesheetRuleOperations {
     public changeSelector(rule: CSSStyleRule, newSelector: string): number {
 
         let parentRule: {}
-        if (rule.parentRule && (rule instanceof this.iframeWindow.CSSGroupingRule)) {
+        if (rule.parentRule && (rule instanceof this.iframeWindow["CSSGroupingRule"])) {
             // let r : CSSGroupingRule = rule;
             // r.
             /* TODO: Sub rule editing*/
@@ -102,4 +105,5 @@ export class StylesheetRuleOperations {
         }
         return selector;
     }
+
 }

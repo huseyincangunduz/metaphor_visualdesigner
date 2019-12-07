@@ -12,7 +12,7 @@ export class TextControlling {
 export const lettersUpper = "ABCDEFGHIJKLMNOPQRSTUVWYXZ";
 export const lettersLower = "abcdefghijklmnopqrstuvwyxz";
 export const letters = lettersLower + lettersUpper;
-export const cssSelectorPunctation = "#. []{}"
+export const cssSelectorPunctation = "#.: []{}"
 export class TextUtils{
     
     public static charEqualAllOfOne(str : string, control : string | string[])

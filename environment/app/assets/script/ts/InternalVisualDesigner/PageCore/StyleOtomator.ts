@@ -1,6 +1,7 @@
 import { TextControlling } from "../../Utils.js";
 import { AbsoluteAnchorer } from "./AbsoluteAnchorer.js";
 import { StylesheetRuleOperations, StyleRuleState } from "./StylesheetRuleOperations.js";
+import { PageCore } from "./PageCore.js";
 
 /** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
 export class CommitParameter {
@@ -56,13 +57,15 @@ export class StyleOtomator {
     editingIframeDocument: Document;
     editingIframeWindow: Window;
 stylesheetRuleOperations : StylesheetRuleOperations;
+    pageCore: PageCore;
 
 
-    constructor(editingIframeWindow_: Window, editingStyleSheet_: CSSStyleSheet,ops : StylesheetRuleOperations) {
+    constructor(editingIframeWindow_: Window, editingStyleSheet_: CSSStyleSheet,ops : StylesheetRuleOperations, pageCore : PageCore) {
         this.editingStyleSheet = editingStyleSheet_;
         this.editingIframeDocument = editingIframeWindow_.document;
         this.editingIframeWindow = editingIframeWindow_;
         this.stylesheetRuleOperations = ops;
+        this.pageCore = pageCore;
     }
 
 
@@ -130,25 +133,14 @@ stylesheetRuleOperations : StylesheetRuleOperations;
 
     }
 
-    //TODO: findRule gibi şeyleri pageCore'a taşı
+  
     findRule(editingElement: HTMLElement, enabledMediaRule: CSSMediaRule, ruleState: StyleRuleState) {
 
 
         //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te
         //ne kadar kendi taginde element varsa sonundaki sayı okadar olur
         //TODO: Element isimlendirmesini başka fonksiyonda yap        
-        if (TextControlling.isEmpty(editingElement.id)) {
-            let newID = "";
-            let doc = editingElement.ownerDocument;
-            let ellist = doc.querySelectorAll(editingElement.tagName).length,
-                trig = ellist;
-            do {
-                newID = editingElement.tagName + "-" + trig;
-                trig++;
-            } while (doc.querySelectorAll(`#${newID}`).length > 0);
-            editingElement.id = newID;
-
-        }
+        this.pageCore.automaticIDChange(editingElement);
 
         return this.stylesheetRuleOperations.getRelatedStyleRule(this.editingStyleSheet,this.editingIframeWindow,editingElement,enabledMediaRule,ruleState)
 

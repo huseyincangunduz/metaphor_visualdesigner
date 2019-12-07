@@ -2,6 +2,7 @@
 //Primitive Components
 import "./Vue/Primitives/TextBox.js";
 import "./Vue/Primitives/TabControl.js"
+import "./Vue/Primitives/ListBox.js"
 //ElementSetters
 import "./Vue/StyleSetters/FontWeightSetter.js"
 import "./Vue/StyleSetters/FontSizeSetter.js"

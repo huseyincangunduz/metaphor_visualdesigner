@@ -5,9 +5,6 @@ export var StyleRuleState;
     StyleRuleState[StyleRuleState["hover"] = 2] = "hover";
 })(StyleRuleState || (StyleRuleState = {}));
 export class StylesheetRuleOperations {
-    constructor(iframeWindow) {
-        this.iframeWindow = iframeWindow;
-    }
     getRelatedStyleRule(editingStyleSheet, editingIframeWindow, editingElement, enabledMediaRule, ruleState) {
         let rulelist;
         let id_selector = `#${editingElement.id}`, selector;
@@ -31,6 +28,9 @@ export class StylesheetRuleOperations {
         }
         return determinedRule;
     }
+    constructor(iframeWindow) {
+        this.iframeWindow = iframeWindow;
+    }
     getRuleIndexFromStylesheet(rule, parent) {
         for (let index = 0; index < parent.cssRules.length; index++) {
             const element = parent.cssRules.item(index);
@@ -41,7 +41,7 @@ export class StylesheetRuleOperations {
     }
     changeSelector(rule, newSelector) {
         let parentRule;
-        if (rule.parentRule && (rule instanceof this.iframeWindow.CSSGroupingRule)) {
+        if (rule.parentRule && (rule instanceof this.iframeWindow["CSSGroupingRule"])) {
             // let r : CSSGroupingRule = rule;
             // r.
             /* TODO: Sub rule editing*/

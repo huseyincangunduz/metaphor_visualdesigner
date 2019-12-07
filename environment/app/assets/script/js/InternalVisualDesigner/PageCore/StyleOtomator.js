@@ -40,11 +40,12 @@ export class CommitParameter {
     }
 }
 export class StyleOtomator {
-    constructor(editingIframeWindow_, editingStyleSheet_, ops) {
+    constructor(editingIframeWindow_, editingStyleSheet_, ops, pageCore) {
         this.editingStyleSheet = editingStyleSheet_;
         this.editingIframeDocument = editingIframeWindow_.document;
         this.editingIframeWindow = editingIframeWindow_;
         this.stylesheetRuleOperations = ops;
+        this.pageCore = pageCore;
     }
     commitStyleElement(editingElement, ruleState) {
         let elementInlineStyle = editingElement.style, elementRelatedStyle = this.findRule(editingElement, null, ruleState), elementComputedStyles = this.editingIframeWindow.getComputedStyle(editingElement);
@@ -95,21 +96,11 @@ export class StyleOtomator {
         AbsoluteAnchorer.modify(elementRelatedStyle.style, computedStyle, commitParam, editingElement);
         return;
     }
-    //TODO: findRule gibi şeyleri pageCore'a taşı
     findRule(editingElement, enabledMediaRule, ruleState) {
         //Eğer elementin ID'i yoksa yeni ID belirler. Bunun için ise te
         //ne kadar kendi taginde element varsa sonundaki sayı okadar olur
         //TODO: Element isimlendirmesini başka fonksiyonda yap        
-        if (TextControlling.isEmpty(editingElement.id)) {
-            let newID = "";
-            let doc = editingElement.ownerDocument;
-            let ellist = doc.querySelectorAll(editingElement.tagName).length, trig = ellist;
-            do {
-                newID = editingElement.tagName + "-" + trig;
-                trig++;
-            } while (doc.querySelectorAll(`#${newID}`).length > 0);
-            editingElement.id = newID;
-        }
+        this.pageCore.automaticIDChange(editingElement);
         return this.stylesheetRuleOperations.getRelatedStyleRule(this.editingStyleSheet, this.editingIframeWindow, editingElement, enabledMediaRule, ruleState);
     }
 }

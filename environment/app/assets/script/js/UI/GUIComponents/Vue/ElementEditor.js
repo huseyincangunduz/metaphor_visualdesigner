@@ -7,26 +7,34 @@ export default Vue.component("element-editor", {
             //Besleme verileri
             styleRule: null,
             internalVisualDesigner: null,
-            pageCore: null
+            pageCore: null,
+            elementSelectorText: null
         };
     },
     computed: {
-        elementSelectorText() {
-            var internalVisualDesigner = this.internalVisualDesigner;
-            let el = this.editingPivotElement;
-            return el ? el.tagName + "#" + el.id : "Not selected!";
-        }
+    // elementSelectorText() {
+    //     //var internalVisualDesigner: InternalVisualDesigner = this.internalVisualDesigner;
+    //     let el: HTMLElement = this.editingPivotElement;
+    //     return el ? el.tagName + "#" + el.id : "Not selected!";
+    // }
     },
     watch: {
         styleRule() {
             this.$refs.styleEditor.styleRule = this.styleRule;
         },
         editingPivotElement() {
-            this.$refs.styleEditor.editingPivotElement = this.editingPivotElement;
-            this.$refs.elementIDChanger.selectedElement = this.editingPivotElement;
+            let el = this.editingPivotElement;
+            this.$refs.styleEditor.editingPivotElement = el;
+            this.$refs.elementIDChanger.selectedElement = el;
+            this.elementSelectorText = el ? el.tagName + "#" + el.id : "Not selected!";
         }
     },
     methods: {
+        refresh() {
+            let el = this.editingPivotElement;
+            this.refreshStyleRule();
+            this.elementSelectorText = el ? el.tagName + "#" + el.id : "Not selected!";
+        },
         refreshStyleRule() {
             this.$refs.styleEditor.updateSelectedElementInfo();
         },
@@ -34,7 +42,6 @@ export default Vue.component("element-editor", {
             if (data.editingPivotElement)
                 this.editingPivotElement = data.editingPivotElement;
             this.styleRule = data["styleRule"];
-            return;
         },
         setInternalVisualDesigner(ivd) {
             this.internalVisualDesigner = ivd;

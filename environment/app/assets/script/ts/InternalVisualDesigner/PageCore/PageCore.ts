@@ -3,7 +3,7 @@ const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 import { InternalVisualDesigner } from "../InternalVisualDesigner.js";
 import { StyleOtomator } from "./StyleOtomator.js";
 import { StylesheetRuleOperations, StyleRuleState } from "./StylesheetRuleOperations.js";
-import { TextUtils, cssSelectorPunctation } from "../../Utils.js";
+import { TextUtils, cssSelectorPunctation, TextControlling } from "../../Utils.js";
 
 /**
  * PageCore sınıfı, döküman düzenlemekten çok dökümanın 
@@ -30,7 +30,7 @@ export class PageCore {
         this.editingIframeWindow = ivd.editingIframeWindow;
         this.stylesheetRuleOps = new StylesheetRuleOperations(this.editingIframeWindow);
         this.mainEditingStyleSheet = this.getMainEditingStyleSheet();
-        this.styleOtomation = new StyleOtomator(this.editingIframeWindow, this.mainEditingStyleSheet,        this.stylesheetRuleOps);
+        this.styleOtomation = new StyleOtomator(this.editingIframeWindow, this.mainEditingStyleSheet,        this.stylesheetRuleOps,this);
 
     }
 
@@ -104,7 +104,7 @@ export class PageCore {
                 element.id = newElementId;
                 
  
-                return {success: true, message: "TODO: ID'yi değiştir"};
+                return {success: true, message: "Element ID is changed"};
             }
             // this.mainEditingStyleSheet.cssText = this.mainEditingStyleSheet..replace(expression,newIdSelector);
            // element.id = newIdSelector;
@@ -143,4 +143,20 @@ export class PageCore {
         this.styleOtomation.commitStyleElement(pivot,ruleState)
     }
     
+    public automaticIDChange(editingElement : HTMLElement)
+    {
+        if (TextControlling.isEmpty(editingElement.id) && editingElement.ownerDocument != null) {
+            let newID = "";
+            let doc = editingElement.ownerDocument;
+            let ellist = doc.querySelectorAll(editingElement.tagName).length,
+                trig = ellist;
+            do {
+                newID = editingElement.tagName + "-" + trig;
+                trig++;
+            } while (doc.querySelectorAll(`#${newID}`).length > 0);
+            editingElement.id = newID;
+
+        }
+
+    }
 }
