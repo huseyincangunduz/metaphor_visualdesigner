@@ -1,5 +1,6 @@
 import { TextControlling } from "../../Utils.js";
 import { AbsoluteAnchorer } from "./AbsoluteAnchorer.js";
+import { WidthBreakpoint } from "./WidthBreakpointsManager.js";
 /** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
 export class CommitParameter {
     constructor() {
@@ -48,7 +49,11 @@ export class StyleOtomator {
         this.pageCore = pageCore;
     }
     commitStyleElement(editingElement, ruleState) {
-        let elementInlineStyle = editingElement.style, elementRelatedStyle = this.findRule(editingElement, null, ruleState), elementComputedStyles = this.editingIframeWindow.getComputedStyle(editingElement);
+        const breakpoint = this.pageCore.widthBreakpointsManager.getSelectedBreakpoint();
+        let medRul = null;
+        if (breakpoint instanceof WidthBreakpoint)
+            medRul = breakpoint.relatedRule;
+        let elementInlineStyle = editingElement.style, elementRelatedStyle = this.findRule(editingElement, medRul, ruleState), elementComputedStyles = this.editingIframeWindow.getComputedStyle(editingElement);
         //console.log({elementInlineStyle, relatedCSSRules: elementRelatedStyle.style});
         //TODO: Stylesheet'e işlenecek olan bir object yarat ve element inline style'i sıfırla
         let commitParam = new CommitParameter();

@@ -7,9 +7,17 @@ export default Vue.component("visual-designer", {
     },
     data() {
         return {
-            rightPanelVisibility: false
+            rightPanelVisibility: false,
+            internalVisualDesigner: null,
+            pageCore: null
         };
     },
+    // computed:{
+    //     pageCore(){
+    //         const  ivd : InternalVisualDesigner = this.internalVisualDesigner;
+    //         return ivd ? ivd.pageCore : null;
+    //     }
+    // },
     watch: {},
     methods: {
         toggleOptionsToggleBtnClicked() {
@@ -21,14 +29,13 @@ export default Vue.component("visual-designer", {
             }
             containerElement.appendChild(guiContentElement);
         },
-        onElementSelected(element, pivot, ruleStyle) {
-            console.info(element, pivot, ruleStyle);
+        onElementSelected(element, pivot, styleRule) {
+            console.info(element, pivot, styleRule);
             this.$refs.elementEditor.sendChanges({
                 editingPivotElement: pivot,
-                styleRule: ruleStyle.style,
+                styleRule: styleRule.style,
                 elementSelectorText: pivot.tagName + "#" + pivot.id
             });
-            console.info({ ruleStyle });
         },
         onElementUpdated() {
             this.$refs.elementEditor.refreshStyleRule();
@@ -36,6 +43,7 @@ export default Vue.component("visual-designer", {
         registerInternalVisualDesigner(ivd) {
             this.InternalVisualDesigner = ivd;
             this.$refs.elementEditor.setInternalVisualDesigner(ivd);
+            this.$refs.pageEditor.setPageCore(ivd.pageCore);
         }
     }
 });

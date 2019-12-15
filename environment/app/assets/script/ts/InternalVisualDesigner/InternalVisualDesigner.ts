@@ -7,8 +7,11 @@ import { StyleOtomator } from "./PageCore/StyleOtomator.js"
 import { ElementTextEditHandler } from "./ElementTextEditHandler.js";
 import { PageCore } from './PageCore/PageCore.js';
 import { StyleRuleState } from './PageCore/StylesheetRuleOperations.js';
+import { WidthBreakpoint,DefaultWidthBreakpoint,IWidthBreakpoint } from './PageCore/WidthBreakpointsManager.js';
+
 const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 export class InternalVisualDesigner {
+
     /** Internal Visual Designer (İç görsel tasarımcı) başlatıldı mı? */
     initialized: boolean = false;
     /** Bağlı olunan Vue Componenti */
@@ -31,7 +34,7 @@ export class InternalVisualDesigner {
     /** PageCore */
     public pageCore: PageCore;
     /** Yeniden boyutlandığında */
-    onResized = (element, pivot) => {
+    private onResized = (element, pivot) => {
         //console.info("resized: ");
         //console.info(pivot);
         //Resize'dan sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir 
@@ -41,7 +44,7 @@ export class InternalVisualDesigner {
         this.eventHandlers.onResized(element,pivot);
     }
     /**Haraket ettirildiğinde */
-    onMoved = (element, pivot) => {
+    private onMoved = (element, pivot) => {
         console.info("moved: ");
         console.info(pivot);
         //Haraket ettirmeden sonra işleme (committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) gerçekleştirilir
@@ -53,15 +56,15 @@ export class InternalVisualDesigner {
         //onMoved olarak emit edilir (üst sınıflar tarafından ayarlanan onMoved eventi çalıştırılır)
         this.eventHandlers.onMoved(element,pivot);
     }
-    onSelected = (element, pivot, styleRule) => {
+    private onSelected = (element, pivot) => {
         //onSelected olarak emit edilir (üst sınıflar tarafından ayarlanan onSelected eventi çalıştırılır)
-        this.eventHandlers.onSelected(element,pivot,styleRule)
+        this.eventHandlers.onSelected(element,pivot)
     }
-    onEnteredTextChangeMode = (editingElement) => {
+    private onEnteredTextChangeMode = (editingElement) => {
         this.elementSelectionMovementHandler.pause()
         this.eventHandlers.onEnteredTextChangeMode(editingElement);
     }
-    onExitedTextChangeMode = (editingElement) => {
+    private onExitedTextChangeMode = (editingElement) => {
         this.elementSelectionMovementHandler.continue()
         this.eventHandlers.onExitedTextChangeMode(editingElement);
     }
@@ -73,7 +76,7 @@ export class InternalVisualDesigner {
         onMoved: (element, pivot) => {
 
         },
-        onSelected: (element, pivot, stylerule) => {
+        onSelected: (element, pivot) => {
 
         },
         onEnteredTextChangeMode: (editingElement) => {
@@ -82,7 +85,7 @@ export class InternalVisualDesigner {
         onExitedTextChangeMode: (editingElement) => {
 
         },
-        
+
     }
     eventHandlerSetters  = {
         onResized: (callback : (element, pivot) => any) => {
@@ -91,7 +94,7 @@ export class InternalVisualDesigner {
         onMoved: (callback : (element, pivot) => any) => {
             this.eventHandlers.onMoved = callback;
         },
-        onSelected: (callback : (element, pivot, stylerule) => any) => {
+        onSelected: (callback : (element, pivot) => any) => {
             this.eventHandlers.onSelected = callback;
         },
         onEnteredTextChangeMode: (callback : (editingElement) => any) => {
@@ -100,7 +103,7 @@ export class InternalVisualDesigner {
         onExitedTextChangeMode: (callback : (editingElement) => any) => {
             this.eventHandlers.onExitedTextChangeMode = callback;
         },
-        setOnSelectedCallback:  (callback : (element, pivot, styleSheet) => any)  =>
+        setOnSelectedCallback:  (callback : (element, pivot) => any)  =>
         {
             this.eventHandlers.onSelected = callback;
         }
@@ -140,8 +143,22 @@ export class InternalVisualDesigner {
         this.initialized = true;
     }
 
+    onBreakpointSelected(b: IWidthBreakpoint) {
+        if (b instanceof WidthBreakpoint)
+        {
+            this.containerHTMLElement.style.setProperty("width",b.width+"px");
+        }
+        else  if (b instanceof DefaultWidthBreakpoint)
+        {
+            this.containerHTMLElement.style.setProperty("width","1200px");
+        }
+        this.internalDesignerComponent.selectedElementUpdate();
+     }
 
-    public static createByDivAndCreate(containerElement: HTMLDivElement, internalDesignerComponent = null, secondarySrc = "about:blank") {
+    public static createByDivAndCreate(containerElement: HTMLDivElement, 
+                                        internalDesignerComponent = null, 
+                                        secondarySrc = "about:blank",
+                                        afterCreated : (ivd : InternalVisualDesigner) => any) {
         let setPositionAbs = (el) => {
             el.style.setProperty("position", "absolute");
         }
@@ -176,8 +193,9 @@ export class InternalVisualDesigner {
             ivd.internalDesignerComponent = internalDesignerComponent;
             ivd.containerHTMLElement = containerElement;
             internalDesignerComponent.internalVisualDesigner = ivd; 
+            afterCreated(ivd);
         }
-        return ivd;
+   
     }
  
 

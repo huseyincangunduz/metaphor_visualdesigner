@@ -1,8 +1,13 @@
 <div class="list-box">
-    <ul>
+    <ul v-if="list && list.length > 0">
         <li v-for="(item, index) in list" @click="selectItem(index)" 
         :style="{ fontWeight: weightBySelection(item) }">
-            {{ item.toString() }}
+            {{ dataShowString(list,index) }}
+            <button @click="removeItemByIndex(index)">Remove</button>
         </li>
+     
     </ul>
+    <div v-else>
+        There is no items
+    </div>
 </div>

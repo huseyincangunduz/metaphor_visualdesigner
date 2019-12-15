@@ -1,34 +1,57 @@
 export class WidthBreakpoint {
-    constructor(width, secondWidth, relatedRule) {
+    constructor(width, relatedRule, secondWidth) {
         this.width = width;
-        this.secondWidth = secondWidth;
         this.relatedRule = relatedRule;
-    }
-    get APPROACH_MIN() {
-        return 0;
-    }
-    get APPROACH_MAX() {
-        return 1;
+        this.secondWidth = secondWidth;
     }
     get widthApproach() {
-        return this.width > 992 ? this.APPROACH_MAX : this.APPROACH_MIN;
+        return this.width > 992 ? WidthBreakpoint.APPROACH_MAX : WidthBreakpoint.APPROACH_MIN;
+    }
+    toString() {
+        return this.width + "px";
     }
 }
-export class WitdthBreakpointsManager {
-    constructor(editingIframeWindow) {
-        this.editingIframeWindow = editingIframeWindow;
+WidthBreakpoint.APPROACH_MIN = 0;
+WidthBreakpoint.APPROACH_MAX = 1;
+export class DefaultWidthBreakpoint {
+    toString() {
+        return "default";
     }
-    get widthBreakpoints() {
-        let mediaRulesArray = [];
-        for (let index = 0; index < this.stylesheet.cssRules.length; index++) {
-            const styleRule = this.stylesheet.cssRules[index];
+}
+export class WidthBreakpointsManager {
+    constructor(editingIframeWindow, editingStylesheet, pageCore) {
+        this.editingIframeWindow = editingIframeWindow;
+        this.editingStylesheet = editingStylesheet;
+        this.pageCore = pageCore;
+        this.refreshBreakpoints();
+    }
+    getSelectedBreakpoint() {
+        return this.selectedBreakpoint;
+    }
+    refreshBreakpoints() {
+        let mediaRulesArray = [new DefaultWidthBreakpoint()];
+        for (let index = 0; index < this.editingStylesheet.cssRules.length; index++) {
+            const styleRule = this.editingStylesheet.cssRules[index];
             if (styleRule instanceof CSSMediaRule || styleRule instanceof this.editingIframeWindow["CSSMediaRule"]) {
                 //@ts-ignore
                 let mediaRule = styleRule;
-                //mediaRule.media
-                //screen and \((.*)\) ((and \((.*)\))|) 1 ve 4. grup
+                let regexResult = mediaRule.conditionText.match(/\((.*?)\)[ ]*((and[ ]*\((.*?)\))|)/);
+                if (regexResult && regexResult[1]) {
+                    let ilkSonuc = regexResult[1];
+                    let ilkSonucRegex = ilkSonuc.match(/(max|min)-(width)[\s]*:[\s]*([0-9]*)([A-Za-z]*)/);
+                    if (ilkSonucRegex && ilkSonucRegex[2] == "width" && ilkSonucRegex[4] == "px") {
+                        let widthInt = parseInt(ilkSonucRegex[3]);
+                        if (!isNaN(widthInt))
+                            mediaRulesArray.push(new WidthBreakpoint(widthInt, mediaRule));
+                    }
+                }
             }
         }
-        return mediaRulesArray;
+        this.widthBreakpoints = mediaRulesArray;
+    }
+    selectBreakpoint(b) {
+        this.selectedBreakpoint = b;
+        this.pageCore.internalVisualDesigner.onBreakpointSelected(b);
+        //this.page
     }
 }

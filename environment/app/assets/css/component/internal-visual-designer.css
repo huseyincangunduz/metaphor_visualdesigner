@@ -1,0 +1,18 @@
+.internal-designer-area{
+    background-color: #212121;
+}
+.internal-designer-area .internal-designer-area-container{
+    position: absolute;
+    display: block;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    
+}
+
+.metaphor-designer[right-panel-visible="true"] .internal-designer-area .internal-designer-area-container
+{
+    transform: none;
+    left: 0px;
+}

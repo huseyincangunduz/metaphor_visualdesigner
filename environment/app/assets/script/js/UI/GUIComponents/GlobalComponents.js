@@ -14,3 +14,5 @@ import "./Vue/InternalVisualDesignerView.js";
 import "./Vue/VisualDesignerEnvironment.js";
 import "./Vue/ElementEditor/ElementIDChanger.js";
 import "./Vue/ElementEditor.js";
+import "./Vue/PageEditor/BreakpointsEditor.js";
+import "./Vue/PageEditor.js";

@@ -2,6 +2,7 @@ import { ElementSelectionAndMovementManager } from './ElementSelectionAndMovemen
 import { ElementTextEditHandler } from "./ElementTextEditHandler.js";
 import { PageCore } from './PageCore/PageCore.js';
 import { StyleRuleState } from './PageCore/StylesheetRuleOperations.js';
+import { WidthBreakpoint, DefaultWidthBreakpoint } from './PageCore/WidthBreakpointsManager.js';
 const EDITING_STYLESHEET_ID = "metaphor-main-editing-stylesheet";
 export class InternalVisualDesigner {
     constructor(bckgDivisionElement, iframeElement, frgDivisionElement) {
@@ -28,9 +29,9 @@ export class InternalVisualDesigner {
             //onMoved olarak emit edilir (üst sınıflar tarafından ayarlanan onMoved eventi çalıştırılır)
             this.eventHandlers.onMoved(element, pivot);
         };
-        this.onSelected = (element, pivot, styleRule) => {
+        this.onSelected = (element, pivot) => {
             //onSelected olarak emit edilir (üst sınıflar tarafından ayarlanan onSelected eventi çalıştırılır)
-            this.eventHandlers.onSelected(element, pivot, styleRule);
+            this.eventHandlers.onSelected(element, pivot);
         };
         this.onEnteredTextChangeMode = (editingElement) => {
             this.elementSelectionMovementHandler.pause();
@@ -45,7 +46,7 @@ export class InternalVisualDesigner {
             },
             onMoved: (element, pivot) => {
             },
-            onSelected: (element, pivot, stylerule) => {
+            onSelected: (element, pivot) => {
             },
             onEnteredTextChangeMode: (editingElement) => {
             },
@@ -93,7 +94,16 @@ export class InternalVisualDesigner {
         //this.styleOtomation = new StyleOtomator(this.editingIframeWindow, this.mainEditingStyleSheet);
         this.initialized = true;
     }
-    static createByDivAndCreate(containerElement, internalDesignerComponent = null, secondarySrc = "about:blank") {
+    onBreakpointSelected(b) {
+        if (b instanceof WidthBreakpoint) {
+            this.containerHTMLElement.style.setProperty("width", b.width + "px");
+        }
+        else if (b instanceof DefaultWidthBreakpoint) {
+            this.containerHTMLElement.style.setProperty("width", "1200px");
+        }
+        this.internalDesignerComponent.selectedElementUpdate();
+    }
+    static createByDivAndCreate(containerElement, internalDesignerComponent = null, secondarySrc = "about:blank", afterCreated) {
         let setPositionAbs = (el) => {
             el.style.setProperty("position", "absolute");
         };
@@ -122,7 +132,7 @@ export class InternalVisualDesigner {
             ivd.internalDesignerComponent = internalDesignerComponent;
             ivd.containerHTMLElement = containerElement;
             internalDesignerComponent.internalVisualDesigner = ivd;
+            afterCreated(ivd);
         };
-        return ivd;
     }
 }

@@ -9,7 +9,8 @@
             <div ref="uiContentAreaContainer" class="internal-designer-area">
 
                 <internal-visual-designer ref="ivsComponent" @element-selected="onElementSelected"
-                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html" @ivd-created="registerInternalVisualDesigner" />
+                    @element-updated="onElementUpdated" initialSrc="../editortests/anchoring.html"
+                    @ivd-created="registerInternalVisualDesigner" />
             </div>
             <div ref="uiRightPanelContainer" class="right-panel">
 
@@ -33,12 +34,15 @@
                                 -->
                 <tab-control>
                     <tab-page name="Element Properties" :selected="true">
-                       <element-editor ref="elementEditor"/>
+                        <element-editor ref="elementEditor" />
                     </tab-page>
-                 
-                    <tab-page name="Page"> Not for now 
 
-                        <list-box></list-box>
+                    <tab-page name="Page">
+                        <div>
+                            <page-editor ref="pageEditor"></page-editor>
+                        </div>
+
+
                     </tab-page>
                 </tab-control>
 

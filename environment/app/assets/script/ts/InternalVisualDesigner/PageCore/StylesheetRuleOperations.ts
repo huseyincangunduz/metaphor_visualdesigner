@@ -56,7 +56,12 @@ export class StylesheetRuleOperations {
             let parent = rule.parentStyleSheet;
             let text = rule.style.cssText;
             //let selector = rule.selectorText;
-            let addedCorrect = parent.insertRule(newSelector + `{${text}}`, parent.rules.length);
+            let newIndex = parent.rules.length;
+            if (rule instanceof this.iframeWindow["CSSStyleRule"])
+            {
+                newIndex = this.getLastStyleRule(parent.rules);
+            }
+            let addedCorrect = parent.insertRule(newSelector + `{${text}}`, newIndex);
             parent.removeRule(this.getRuleIndexFromStylesheet(rule, parent));
             return addedCorrect;
         }
@@ -65,16 +70,44 @@ export class StylesheetRuleOperations {
     insertNewRule(selector: string[], enabledMediaRule: CSSMediaRule, editingStyleSheet: CSSStyleSheet): CSSStyleRule {
         var determinedRule;
         let cssRuleText = selector.join(", ") + " { }";
-        if (enabledMediaRule != null) {
-            let ni = enabledMediaRule.insertRule(cssRuleText, enabledMediaRule.cssRules.length);
-            determinedRule = enabledMediaRule.cssRules.item(ni);
-        }
-        else (editingStyleSheet != null)
+        let lastStyleRule = 0, ni = 0;
+        let cssRules : CSSRuleList;
+        let p : CSSMediaRule | CSSStyleSheet;
+
+        if (enabledMediaRule != null)
         {
-            let ni = editingStyleSheet.insertRule(cssRuleText, editingStyleSheet.cssRules.length);
-            determinedRule = editingStyleSheet.cssRules.item(ni);
+            cssRules = enabledMediaRule.cssRules;
+            p = enabledMediaRule;
+        } else if  (editingStyleSheet != null) 
+        {
+            cssRules = editingStyleSheet.cssRules;
+            p = editingStyleSheet;
         }
+        lastStyleRule = this.getLastStyleRule(cssRules)
+        ni = p.insertRule(cssRuleText, lastStyleRule);
+        // if (enabledMediaRule != null) {
+
+          
+    
+        // }
+        // else if (editingStyleSheet != null)
+        // {
+        //     ni = editingStyleSheet.insertRule(cssRuleText, lastStyleRule);
+           
+        // }
+        determinedRule = cssRules.item(ni);
         return determinedRule;
+    }
+    getLastStyleRule(cssRules: CSSRuleList): number {
+        let lastStyleRule = 0;
+        for (let i = 0; i < cssRules.length; i++) {
+            const el = cssRules.item(i);
+            if (el instanceof CSSStyleRule)
+            {
+                lastStyleRule = i;
+            }
+        }
+        return lastStyleRule;
     }
     isSuitableStyleRule(selectorText: string, selector: string[]): boolean {
         let determine: boolean;

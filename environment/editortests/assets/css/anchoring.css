@@ -52,3 +52,11 @@
     margin-top: 10px;
     margin-right: 15px;
 }
+
+
+@media screen and (max-width: 600px)
+{
+    #division1{
+        background-color: green;
+    }
+}

@@ -20,7 +20,7 @@ class ElementSelectionAndMovementManager {
                     else
                         sadeceVurgulama = true;
                     this.resizeHandler.select(targetElement_, sadeceVurgulama);
-                    this.eventHandlers.onSelected(this.selectedElements, targetElement_, null);
+                    this.eventHandlers.onSelected(this.selectedElements, targetElement_);
                     this.resizeHandler.hideDots();
                 }
             }
@@ -42,7 +42,7 @@ class ElementSelectionAndMovementManager {
         this.eventHandlers = {
             onResized: (elements, pivot) => {
             },
-            onSelected: (element, pivot, styleSheet) => {
+            onSelected: (element, pivot) => {
             },
             onMoved: (elements, pivot) => {
             }

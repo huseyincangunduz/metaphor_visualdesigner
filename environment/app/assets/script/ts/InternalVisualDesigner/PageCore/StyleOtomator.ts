@@ -2,6 +2,7 @@ import { TextControlling } from "../../Utils.js";
 import { AbsoluteAnchorer } from "./AbsoluteAnchorer.js";
 import { StylesheetRuleOperations, StyleRuleState } from "./StylesheetRuleOperations.js";
 import { PageCore } from "./PageCore.js";
+import { WidthBreakpoint } from "./WidthBreakpointsManager.js";
 
 /** İşleme parametresi - İnline stilleri belli bir şekilde derin kopyalama yapar. */
 export class CommitParameter {
@@ -70,8 +71,14 @@ stylesheetRuleOperations : StylesheetRuleOperations;
 
 
     commitStyleElement(editingElement: HTMLElement, ruleState: StyleRuleState) {
+        const breakpoint = this.pageCore.widthBreakpointsManager.getSelectedBreakpoint();
+        let medRul : CSSMediaRule | null = null;
+        if (breakpoint instanceof WidthBreakpoint)  
+        medRul = breakpoint.relatedRule;
+        
+
         let elementInlineStyle = editingElement.style,
-            elementRelatedStyle = this.findRule(editingElement, null, ruleState),
+            elementRelatedStyle = this.findRule(editingElement, medRul, ruleState),
             elementComputedStyles = this.editingIframeWindow.getComputedStyle(editingElement);
         //console.log({elementInlineStyle, relatedCSSRules: elementRelatedStyle.style});
         //TODO: Stylesheet'e işlenecek olan bir object yarat ve element inline style'i sıfırla

@@ -3,13 +3,17 @@ export default Vue.component("list-box", {
     template: ViewIndex.getViewSync("list-box", "", true),
     data: () => {
         return {
-            list: [1, 2, 3, 4, 5],
+            list: [],
             selectedItem: null,
+            dataShowString: (list, index) => {
+                return list[index];
+            }
         };
     },
     methods: {
         selectItem(i) {
             this.selectedItem = this.list[i];
+            this.$emit("item-selected", this.list, i);
         },
         setList(list) {
             this.list = list;
@@ -17,6 +21,15 @@ export default Vue.component("list-box", {
         },
         weightBySelection(item) {
             return this.selectedItem == item ? 700 : 400;
+        },
+        removeItemByIndex(index) {
+            let list = this.list;
+            let item = list[index];
+            list.splice(index, 1);
+            this.$emit("item-removed", item, index);
+        },
+        setDataToString(callback) {
+            this.dataShowString = callback;
         }
     }
 });

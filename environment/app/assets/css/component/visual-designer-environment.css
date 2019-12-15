@@ -1,65 +1,60 @@
 :root {
-    --rightPanelSize: 500px;
-    --contentRight: 520px
-  }
-  
-  
-  .topbar, .melih-topbar {
-    position: relative;
-    background-color: rgb(51, 51, 51);
-    height: 50px;
-    color: white;
-  }
-  
-  .topbar .topbar-right {
-    position: absolute;
-    right: 0px;
-    padding: 10px;
-  }
-  
-  .metaphor-designer {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    top: 50px;
-  }
-  
-  .visualdesigner_foreground ::-webkit-scrollbar
-  {
-    visibility: hidden;
-  }
-  
-  .internal-designer-area{
-    position: absolute;
-    right: 0px;
-    left: 10px;
-  
-    height: 100%;
-  
-    overflow: hidden;
-  }
-  
-  
-  
-  .right-panel {
-    position: absolute;
-    height: 100%;
-    overflow-y: scroll;
-    right: 0px;
-    width: 0px;
-    
-    background-color: #424242;
-    color: white !important;
-  }
-  
-  .metaphor-designer[right-panel-visible="true"] .internal-designer-area {
-    right: var(--contentRight);
-  }
-  
-  .metaphor-designer[right-panel-visible="true"] .right-panel {
-    width: var(--rightPanelSize);
-    padding: 0px 10px;
-  }
-  
-  
+  --rightPanelSize: 500px;
+  --contentRight: 520px
+}
+
+.topbar, .melih-topbar {
+  position: relative;
+  background-color: rgb(51, 51, 51);
+  height: 50px;
+  color: white;
+}
+
+.topbar .topbar-right {
+  position: absolute;
+  right: 0px;
+  padding: 10px;
+}
+
+.metaphor-designer {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 50px;
+}
+
+.visualdesigner_foreground ::-webkit-scrollbar {
+  visibility: hidden;
+}
+
+.internal-designer-area {
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.right-panel {
+  position: absolute;
+  height: 100%;
+  overflow-y: scroll;
+  right: 0px;
+  width: 0px;
+  background-color: #424242;
+  color: white !important;
+}
+
+.metaphor-designer[right-panel-visible="true"] .internal-designer-area {
+  right: var(--contentRight);
+  left: none;
+  /* //transform: scale(); */
+}
+
+.metaphor-designer[right-panel-visible="true"] .right-panel {
+  width: var(--rightPanelSize);
+  padding: 0px 10px;
+  box-shadow: 1px 1px gray;
+}

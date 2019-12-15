@@ -11,13 +11,6 @@ export default Vue.component("element-editor", {
             elementSelectorText: null
         };
     },
-    computed: {
-    // elementSelectorText() {
-    //     //var internalVisualDesigner: InternalVisualDesigner = this.internalVisualDesigner;
-    //     let el: HTMLElement = this.editingPivotElement;
-    //     return el ? el.tagName + "#" + el.id : "Not selected!";
-    // }
-    },
     watch: {
         styleRule() {
             this.$refs.styleEditor.styleRule = this.styleRule;
@@ -36,12 +29,12 @@ export default Vue.component("element-editor", {
             this.elementSelectorText = el ? el.tagName + "#" + el.id : "Not selected!";
         },
         refreshStyleRule() {
+            //TODO: Refreshleme çok basit kalıyor
             this.$refs.styleEditor.updateSelectedElementInfo();
         },
         sendChanges(data) {
-            if (data.editingPivotElement)
-                this.editingPivotElement = data.editingPivotElement;
-            this.styleRule = data["styleRule"];
+            this.editingPivotElement = data.editingPivotElement;
+            this.styleRule = data.styleRule;
         },
         setInternalVisualDesigner(ivd) {
             this.internalVisualDesigner = ivd;

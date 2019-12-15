@@ -4,6 +4,7 @@ import { InternalVisualDesigner } from "../InternalVisualDesigner.js";
 import { StyleOtomator } from "./StyleOtomator.js";
 import { StylesheetRuleOperations, StyleRuleState } from "./StylesheetRuleOperations.js";
 import { TextUtils, cssSelectorPunctation, TextControlling } from "../../Utils.js";
+import { WidthBreakpointsManager } from "./WidthBreakpointsManager.js";
 
 /**
  * PageCore sınıfı, döküman düzenlemekten çok dökümanın 
@@ -19,9 +20,10 @@ export class PageCore {
     protected editingIframeDocument: HTMLDocument;
     protected editingIframeWindow: Window;
     protected mainEditingStyleSheet: CSSStyleSheet;
-
+    
     /** Stilleri ekleme, çıkarma, işlemek(committing, her hareketten sonra satıriçi stilleri, ana stil sayfasına uygun hale getirilip taşınması) işleri için kullanılan sınıf */
     public styleOtomation: StyleOtomator;
+    public widthBreakpointsManager : WidthBreakpointsManager;
     protected stylesheetRuleOps: StylesheetRuleOperations;
 
     public constructor(ivd: InternalVisualDesigner) {
@@ -31,7 +33,7 @@ export class PageCore {
         this.stylesheetRuleOps = new StylesheetRuleOperations(this.editingIframeWindow);
         this.mainEditingStyleSheet = this.getMainEditingStyleSheet();
         this.styleOtomation = new StyleOtomator(this.editingIframeWindow, this.mainEditingStyleSheet,        this.stylesheetRuleOps,this);
-
+        this.widthBreakpointsManager = new WidthBreakpointsManager(this.editingIframeWindow, this.mainEditingStyleSheet,this);
     }
 
 
@@ -47,6 +49,7 @@ export class PageCore {
             let rule = rules.item(i);
             //@ts-ignore
             if (rule instanceof this.editingIframeWindow["CSSStyleRule"] && callback(rule)) break;
+            //else if (rule instanceof this.editingIframeWindow["CSSMediaRule"] && callback(rule)) 
         }
     }
 
@@ -54,7 +57,7 @@ export class PageCore {
     setIDRequest(element : HTMLElement,newElementId : string) : { success: boolean; message: string; } {
       
         //gelen id geçerlimi diye bakmak
-        console.info("SETIDREQUEST x");
+       
         let isValidId = newElementId.match(new RegExp("(^(([a-z]+)([-_][a-z]+)*)$)"));
         if (isValidId)
         {
@@ -83,10 +86,7 @@ export class PageCore {
 
                         let flag = true;
 
-                        // if (i - 1 != -1)
-                        // {
-                        //     flag = TextUtils.charEqualAllOfOne(selectorText[i-1],cssSelectorPunctation);
-                        // }
+
                         if (flag && i + idSelector.length < selectorText.length)
                         {
                             flag = TextUtils.charEqualAllOfOne(selectorText[i + idSelector.length],cssSelectorPunctation);
@@ -98,19 +98,15 @@ export class PageCore {
                         }
             
                     }
-                    // r.selectorText.replace(oldIDexpression,newIdSelector);
+               
                     return false;
                 });
                 element.id = newElementId;
-                
+                //this.internalVisualDesigner.onSelected(null,null);
  
                 return {success: true, message: "Element ID is changed"};
             }
-            // this.mainEditingStyleSheet.cssText = this.mainEditingStyleSheet..replace(expression,newIdSelector);
-           // element.id = newIdSelector;
-            
-            // this.mainEditingStyleSheet.cssText = this.mainEditingStyleSheet..replace(expression,newIdSelector);
-           // element.id = newIdSelector;
+  
             
         }
         else{
