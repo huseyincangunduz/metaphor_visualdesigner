@@ -1,4 +1,4 @@
-DİKKAT: ESKİ VERSİYON
+DİKKAT: ESKİ VERSİYONDUR.
 YENİ VERSİYON => https://github.com/huseyincangunduz/visual-designer
 
 Morphosium Metaphor Visual Designer Environment
